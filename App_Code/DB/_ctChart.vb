@@ -1,4 +1,5 @@
 ﻿Imports System
+'im
 Imports System.Drawing
 Imports System.Collections.Generic
 Imports System.Data
@@ -9,6 +10,7 @@ Namespace SIS.CT
   <DataObject()>
   Public Class CTChart
     Private Class ctData
+      Dim a As String = ""
       Public Property ValX As String = ""
       Public Property ValY As Integer = 0
       Public Sub New(ByVal Reader As SqlDataReader)
