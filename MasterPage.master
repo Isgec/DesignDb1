@@ -1,0 +1,239 @@
+﻿<%@ Master Language="VB" CodeFile="MasterPage.master.vb" Inherits="lgMasterPage" %>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+  <title>ISGEC-Design Dashboard</title>
+  <link rel="SHORTCUT ICON" type="image/x-icon" runat="server" href="~/isgec.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <!--JQuery 3.3-->
+  <script type="text/javascript" src="/../UserRights/jq3.3/jquery-3.3.1.min.js"></script>
+  <!-- Font 4.7-->
+  <link href="/../UserRights/fa4.7/css/font-awesome.min.css" rel="stylesheet" />
+  <!--Bootstrap 4.0 uses Jquery 3 or above, Popper & Tooltip-->
+  <link rel="stylesheet" href="/../UserRights/bs4.0/css/bootstrap.min.css" />
+  <script type="text/javascript" src="/../UserRights/Popper1.0/Popper.min.js"></script>
+  <script type="text/javascript" src="/../UserRights/bs4.0/js/bootstrap.min.js"></script>
+
+  <link rel="stylesheet" runat="server" href="~/App_Themes/Default/Menu.css" />
+  
+  <script>
+function startTime() {
+  var today = new Date();
+  var h = today.getHours();
+  var m = today.getMinutes();
+  var s = today.getSeconds();
+  m = checkTime(m);
+  s = checkTime(s);
+  document.getElementById('txt').innerHTML =
+  h + ":" + m + ":" + s;
+  var t = setTimeout(startTime, 500);
+}
+function checkTime(i) {
+  if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+  return i;
+}
+</script>
+
+
+
+
+  <asp:ContentPlaceHolder ID="cphMain" runat="server" EnableViewState="true">
+  </asp:ContentPlaceHolder>
+</head>
+<body onload="startTime()">
+  
+  <form id="form1" runat="server">
+  <ASP:ScriptManager ID="ToolkitScriptManager1" EnableScriptGlobalization="true" runat="server" EnablePageMethods="true" AsyncPostBackTimeout="3600" EnableScriptLocalization="True" ScriptMode="Auto">
+    <Scripts>
+        <asp:ScriptReference Path="/../UserRights/jquery/webkit.js" />
+
+
+
+
+
+    </Scripts>
+  </ASP:ScriptManager>
+  <LGM:LGLoading ID="LGLoadingM" runat="server" />
+    <script type="text/javascript">
+      Sys.WebForms.PageRequestManager.getInstance().add_endRequest(hideProcessingMPV);
+      Sys.WebForms.PageRequestManager.getInstance().add_beginRequest(showProcessingMPV);
+      function groupClicked(p) {
+        var tbl = p.parentElement.parentElement;
+        var o = p.parentElement.rowIndex;
+        for (ii = 0; ii <= tbl.rows.length - 1; ii++) {
+          if (ii > o) {
+            if (tbl.rows[ii].id != '')
+              return;
+            if (tbl.rows[ii].style.display == 'none')
+              tbl.rows[ii].style.display = '';
+            else
+              tbl.rows[ii].style.display = 'none';
+          }
+        }
+      }
+      function dc(o, p) {
+        var dec = /^-?\d+(?:\.\d{0,6})?$/;
+        var v = o.value;
+        if (v.match(dec)) {
+          o.value = parseFloat(v).toFixed(p);
+        } else {
+          o.value = parseFloat('0').toFixed(p);
+        }
+      }
+    </script>
+    <div id="divmain" class="master_table">
+    <table style="width: 100%">
+      <tr>
+         <%-- <td>
+          <asp:Image ID="Image1" runat="server" AlternateText="logo"   ImageAlign="Right" width="550" height="72" ImageUrl="~/logo.jpg" />
+          
+        </td>--%>
+
+        <td class="sis_header">
+          <asp:Image ID="any" runat="server" AlternateText="logo"   ImageAlign="Left" width="700" height="72" ImageUrl="~/DB.jpg" />
+          
+        </td>
+        <td class="loginTd">
+          <LGM:LoginLine ID="LoginLine1" runat="server" />
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" id="algmnu" runat="server" align="center" style="margin: auto">
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" class="wp_body" runat="server" id="mainBody">
+          <asp:ContentPlaceHolder ID="cph1" runat="server" EnableViewState="true">
+
+          </asp:ContentPlaceHolder>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" class="sis_footer">
+          <table style="width: 100%">
+           
+            <tr>
+              <td>
+                <font size="1"><span style="color: #ffffff">  </span></font>
+              </td>
+            </tr>
+
+<%--            Clock--%>
+            
+
+
+
+
+
+
+            <tr>
+              <td>
+                 <span style="color: #99ccff"><asp:Label ID="Label1" runat="server" Text="Visit Counter:" Visible="false" ></asp:Label></span>
+                <span style="color: #99ffcc"><asp:Label ID="Visitorcount" runat="server" Text=""></asp:Label></span>
+               <span style="color: #ffffff"><font size="2" face="corbel"><asp:Label ID="Visitorcountn" runat="server" Text="" Visible="true"></asp:Label></font></span>
+              </td>
+               <td>
+              <div class="text-right text-light" ><font size="3.5" face="corbel">Time- <asp:Label ID="txt" runat="server" Text=""></asp:Label></font></div> </td>
+            </tr>
+            <tr>
+              <td>
+                <span style="color: #99ccff; font-size:14px; line-height:35px; font-family: Corbel;">Designed &amp; Developed by:</span> <span style="color: #99ffcc; font-size:14px; line-height:35px; font-family: Corbel;">ISGEC Engineering-IT Team</span>
+                 </td>
+            </tr>
+
+            <tr>
+              <td>
+                <span style="color: #99ccff; font-size:14px; line-height:35px; font-family: Corbel;">Version : </span> <span style="color: #99ffcc; font-size:14px; line-height:35px; font-family: Corbel;"> DB 1.4</span>
+                <a href="#vinformation" class="btn btn-light btn-outline-light" style="width: 28px;height: 28px; text-align: center; text-justify:auto; cursor: pointer" data-toggle="collapse"><b>i</b></a>
+  
+                <a href="#UserGuide" class="btn btn-light btn-outline-primary" style="width: 190px;height: 28px; text-align: center; text-rendering:auto;  text-justify:auto; cursor: pointer" data-toggle="collapse"><b>User Manual</b></a>
+  <div id="UserGuide" class="collapse">
+    
+   <embed src="Design_DashBoard-1.0.1-User_Manual.pdf" width="1500px" height="2100px" />
+   <%-- <a href="Design_DashBoard-1.0.1-%20User_Manual.pdf">Design_DashBoard-1.0.1- User_Manual.pdf</a>--%>
+  
+  </div>
+<div id="vinformation" class="collapse">
+  <div class ="row"> 
+    <div class="col-4">
+      <hr/>
+  <span style="color: #99ccff; font-size:14px;font-family: Corbel;">DB1.0 -First Release : </span><span style="color: #99ffcc">06/04/2019 </span>
+ <hr/>
+   <p><span style="color:#99ccff; font-size:12px; line-height:unset; font-family: Corbel;">DB1.1 -Update 2 : </span><span style="color: #99ffcc">11/06/2019 </span></p>
+  <p> <span style="color: #99ffcc; font-size:10px; line-height:8px; font-family: Corbel;">1. User DashBoard - Pre/Post Order receipt information updated  </span> </p>
+   <p> <span style="color: #99ffcc; font-size:10px; line-height:8px; font-family: Corbel;">2. Project DashBoard - Pre/Post Order receipt information updated  </span> </p>
+   <p> <span style="color: #99ffcc; font-size:10px; line-height:8px; font-family: Corbel;">3. Project DashBoard - HOLD Chart/Report Added  </span> </p>
+
+   <hr/>
+
+   <p><span style="color: #99ccff">DB1.2 -Update 3 : </span><span style="color: #99ffcc">15/02/2020 </span></p>
+  <p> <b><span style="color:aquamarine"> Discipline DashBoard Added  </span></b></p>
+        <p> <span style="color: #99ffcc; font-family: Corbel">1. Drawing and Document Progress Status As per PMDL (Baseline Finish Date)  </span> </p>
+        <p> <span style="color: #99ffcc; font-family: Corbel">2. SAR Progress Status  </span> </p>
+        <p> <span style="color: #99ffcc; font-family: Corbel">3. Active Element Progress  </span> </p>
+        <p> <span style="color: #99ffcc; font-family: Corbel">4. IDMS Pre Order Receipt Progress Status  </span> </p>
+        <p> <span style="color: #99ffcc; font-family: Corbel">5. IDMS Post Order Receipt Progress Status  </span> </p>
+        <hr/>
+
+   <p><span style="color: #99ccff">DB1.3 -Update 4 : </span><span style="color: #99ffcc">01/07/2020 </span></p>
+        <p><b><span style="color:mediumspringgreen">Document DashBoard Added  </span></b></p>
+        <p> <span style="color:mediumspringgreen; font-family: Corbel">1. PMDL, MANHOUR, BOM,REFERENCE DRAWING, TRANSMITTAL and DCR tables along with INDENT and PO Details.  </span> </p>
+        <p> <span style="color:mediumspringgreen; font-family: Corbel">2. SAR information table  </span> </p>
+        <p> <span style="color:mediumspringgreen; font-family: Corbel">3. Drawing Weight check with Item's weight sum  </span> </p>
+        <p> <span style="color:mediumspringgreen; font-family: Corbel">4. Show PRE-ORDER  and POST ORDER details in table  </span> </p>
+        <p> <span style="color:mediumspringgreen; font-family: Corbel">5. Real time Vault status update added for LOCK/UNLOCK of file  </span> </p>
+         <hr/>
+        <p><span style="color: #99ccff">DB1.4 -Update 5 : </span><span style="color: #99ffcc">01/07/2020 </span></p>
+        <p><b><span style="color:mediumspringgreen">Document DashBoard Upgraded  </span></b></p>
+      <p> <span style="color:mediumspringgreen; font-family: Corbel">1. Part Item details added </span></p>
+      <p> <span style="color:mediumspringgreen; font-family: Corbel">2. Live Trasfer view from Autodesk Vault to ERPLN Added </span></p>
+      <p> <span style="color:mediumspringgreen; font-family: Corbel">3. Standard Document List added </span></p>
+      <p> <span style="color:mediumspringgreen; font-family: Corbel">4. DCR details added </span></p>
+              
+
+
+   <hr/>
+  </div> 
+
+      <div class="col-8">
+          
+
+      </div>
+  </div>
+  </div>
+
+
+              </td>
+            </tr>
+
+             <tr>
+              <td>
+                <span style="color: #ffffff"><font size="1">© ISGEC Heavy Engineering Limited. All rights reserved.</font></span>
+              </td>
+               
+            </tr>
+           
+          </table>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+<div id="myModal" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span onclick="document.getElementById('myModal').style.display = 'none';" class="close">&times;</span>
+    <div id="myModalMsg" style="padding-top:20px;"></div>
+  </div>
+</div>
+<script type="text/javascript">
+  function show_message(s) {
+    document.getElementById('myModalMsg').innerHTML = s;
+    document.getElementById('myModal').style.display = 'block';
+  }
+</script>
+  </form>
+
+</body>
+
+</html>
