@@ -8,6 +8,7 @@ Partial Class Informations
         F_EmployeeName.Text = oEmp.EmployeeName
         F_Department.Text = oEmp.HRM_Departments2_Description
         F_Designation.Text = oEmp.HRM_Designations3_Description
+
       End If
       Me.Visible = True
       If Not Page.IsPostBack And Not Page.IsCallback Then

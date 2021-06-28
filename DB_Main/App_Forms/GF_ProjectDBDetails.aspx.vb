@@ -843,6 +843,152 @@ Partial Class GF_ProjectDBDetails
     ppnlDetails.Controls.Add(tbl)
 
   End Sub
+  Private Sub ShowPIDData(ByVal x As String, ByVal y As String)
+    Dim Data As List(Of SIS.DB.ProDoc) = SIS.DB.ProDoc.GetProData(x, y)
+    Dim tbl As New Table
+
+    With tbl
+
+      .GridLines = GridLines.Both
+      .BorderWidth = 2
+      .CellSpacing = 2
+      .Width = Unit.Percentage(100)
+
+    End With
+
+    Dim tr As TableRow = Nothing
+    Dim td As TableCell = Nothing
+
+    'Header
+    tr = New TableRow
+
+    td = New TableCell
+    td.Text = "S.NO."
+    With td
+      .Font.Bold = True
+      .Font.Size = FontUnit.Point(8)
+    End With
+    tr.Cells.Add(td)
+
+    td = New TableCell
+    With td
+      .Font.Bold = True
+      .Font.Size = FontUnit.Point(8)
+    End With
+    td.Text = "PROJECT"
+    tr.Cells.Add(td)
+
+    td = New TableCell
+    With td
+      .Font.Bold = True
+      .Font.Size = FontUnit.Point(8)
+    End With
+    td.Text = "UID"
+    tr.Cells.Add(td)
+
+    td = New TableCell
+    With td
+      .Font.Bold = True
+      .Font.Size = FontUnit.Point(8)
+    End With
+    td.Text = "REV"
+    tr.Cells.Add(td)
+
+    td = New TableCell
+    With td
+      .Font.Bold = True
+      .Font.Size = FontUnit.Point(8)
+    End With
+    td.Text = "DOCUMENT ID"
+    tr.Cells.Add(td)
+
+    td = New TableCell
+    With td
+      .Font.Bold = True
+      .Font.Size = FontUnit.Point(8)
+    End With
+    td.Text = "TITLE"
+    tr.Cells.Add(td)
+
+    td = New TableCell
+    With td
+      .Font.Bold = True
+      .Font.Size = FontUnit.Point(8)
+    End With
+    td.Text = "ELEMENT"
+    tr.Cells.Add(td)
+
+    td = New TableCell
+    With td
+      .Font.Bold = True
+      .Font.Size = FontUnit.Point(8)
+    End With
+    td.Text = "OWNER's DEPT."
+    tr.Cells.Add(td)
+
+    td = New TableCell
+    With td
+      .Font.Bold = True
+      .Font.Size = FontUnit.Point(8)
+    End With
+    td.Text = "ACTUAL RELEASE DATE"
+    tr.Cells.Add(td)
+
+
+    tbl.Rows.Add(tr)
+
+    Dim I As Integer = 0
+    '================
+    For Each tmp As SIS.DB.ProDoc In Data
+      I += 1
+      tr = New TableRow
+
+      td = New TableCell
+      td.Text = I
+      tr.Cells.Add(td)
+
+      td = New TableCell
+      td.Text = tmp.Project
+      tr.Cells.Add(td)
+
+      td = New TableCell
+      td.Text = tmp.UID
+      tr.Cells.Add(td)
+
+      td = New TableCell
+      td.Text = tmp.Revision
+      tr.Cells.Add(td)
+
+      td = New TableCell
+      td.Text = tmp.Document_ID
+      tr.Cells.Add(td)
+
+      td = New TableCell
+      td.Text = tmp.Tittle
+      tr.Cells.Add(td)
+
+      td = New TableCell
+      td.Text = tmp.element
+      tr.Cells.Add(td)
+
+      td = New TableCell
+      td.Text = tmp.Owner_department
+      tr.Cells.Add(td)
+
+      td = New TableCell
+      td.Text = tmp.Actual_Release_Date
+      tr.Cells.Add(td)
+
+
+
+      tbl.Rows.Add(tr)
+
+    Next
+    '================
+    ppnlDetails.Controls.Add(tbl)
+
+  End Sub
+
 
 
   Private Sub ShowSARData(ByVal x As String, ByVal y As String)
@@ -1193,10 +1339,6 @@ Partial Class GF_ProjectDBDetails
       td.Text = tmp.sname
       tr.Cells.Add(td)
 
-
-      td = New TableCell
-      td.Text = tmp.t_dsca
-      tr.Cells.Add(td)
 
       td = New TableCell
       td.Text = tmp.IMechanical
@@ -3551,7 +3693,75 @@ Partial Class GF_ProjectDBDetails
       ShowPSTRANSMITTALData(Det, PrjID)
     End If
 
+    If (Det = "CI_PID_Pending_Count") Then
+      PPSheading.Text = "C&I - Pending Drawings/Document for Issue"
+      ShowPIDData(Det, PrjID)
+    End If
 
+    If (Det = "CI_PID_Total_Count") Then
+      PPSheading.Text = "C&I - Total Drawings/Document released as Per PMDL"
+      ShowPIDData(Det, PrjID)
+    End If
+
+    If (Det = "Electrical_PID_Pending_Count") Then
+      PPSheading.Text = "Electrical - Pending Drawings/Document for Issue"
+      ShowPIDData(Det, PrjID)
+    End If
+    If (Det = "Electrical_PID_Total_Count") Then
+      PPSheading.Text = "Electrical -  Total Drawings/Document released as Per PMDL"
+      ShowPIDData(Det, PrjID)
+    End If
+    If (Det = "Mechanical_PID_Pending_Count") Then
+      PPSheading.Text = "Mechanical - Pending Drawings/Document for Issue"
+      ShowPIDData(Det, PrjID)
+    End If
+    If (Det = "Mechanical_PID_Total_Count") Then
+      PPSheading.Text = "Mechanical -  Total Drawings/Document released as Per PMDL"
+      ShowPIDData(Det, PrjID)
+    End If
+    If (Det = "Others_PID_Pending_Count") Then
+      PPSheading.Text = "Others - Pending Drawings/Document for Issue"
+      ShowPIDData(Det, PrjID)
+    End If
+    If (Det = "Others_PID_Total_Count") Then
+      PPSheading.Text = "Others -  Total Drawings/Document released as Per PMDL"
+      ShowPIDData(Det, PrjID)
+    End If
+
+    If (Det = "Structure_PID_Pending_Count") Then
+      PPSheading.Text = "Structure - Pending Drawings/Document for Issue"
+      ShowPIDData(Det, PrjID)
+    End If
+    If (Det = "Structure_PID_Total_Count") Then
+      PPSheading.Text = "Structure -  Total Drawings/Document released as Per PMDL"
+      ShowPIDData(Det, PrjID)
+    End If
+
+    If (Det = "Piping_PID_Pending_Count") Then
+      PPSheading.Text = "Piping - Pending Drawings/Document for Issue"
+      ShowPIDData(Det, PrjID)
+    End If
+    If (Det = "Piping_PID_Total_Count") Then
+      PPSheading.Text = "Piping -  Total Drawings/Document released as Per PMDL"
+      ShowPIDData(Det, PrjID)
+    End If
+
+    If (Det = "Total_PID_Pending_Count") Then
+      PPSheading.Text = "Total Pending Drawings/Document for Issue"
+      ShowPIDData(Det, PrjID)
+    End If
+    If (Det = "Total_PID_Total_Count") Then
+      PPSheading.Text = " Total Drawings/Document released as Per PMDL"
+      ShowPIDData(Det, PrjID)
+    End If
+    If (Det = "Process_PID_Total_Count") Then
+      PPSheading.Text = "Process -  Total Drawings/Document released as Per PMDL"
+      ShowPIDData(Det, PrjID)
+    End If
+    If (Det = "Process_PID_Pending_Count") Then
+      PPSheading.Text = "Process - Pending Drawings/Document for Issue"
+      ShowPIDData(Det, PrjID)
+    End If
 
 
 

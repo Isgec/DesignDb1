@@ -18,7 +18,9 @@ Namespace SIS.DD
     Public Property t_sars As String = ""
     Public Property t_natp As String = ""
 
-    'KJK
+    Public Property t_bpid As String = ""
+    Public Property sname As String = ""
+    'KJK 
 
 
     Public Property prjID As String = ""
@@ -224,6 +226,91 @@ Namespace SIS.DD
 
 
         End Select
+
+        Using Cmd As SqlCommand = Con.CreateCommand()
+          Cmd.CommandType = CommandType.Text
+          Cmd.CommandText = Sql
+          Cmd.CommandTimeout = 3000
+          Dim rd As SqlDataReader = Cmd.ExecuteReader
+          While (rd.Read)
+            mRet.Add(New DisciplineDetail(rd))
+          End While
+        End Using
+      End Using
+      Return mRet
+    End Function
+    Public Shared Function GetDissueData(ByVal det As String, ByVal DivisionID As String, ByVal DisciplineID As String, ByVal YearID As String, ByVal MonthID As String) As List(Of DisciplineDetail)
+      Dim userG As String = ""
+
+      Dim UserID As String = HttpContext.Current.Session("LoginID")
+      Dim UserIDT As Integer = 0
+      Try
+        UserIDT = Convert.ToInt32(UserID)
+      Catch ex As Exception
+
+      End Try
+
+
+
+      If DivisionID = "" Then Return Nothing
+      If DisciplineID = "" Then Return Nothing
+      If DisciplineID = "CI" Then DisciplineID = "C&I"
+      If YearID = "" Then Return Nothing
+      If MonthID = "" Then Return Nothing
+      Dim mRet As New List(Of SIS.DD.DisciplineDetail)
+      Select Case DivisionID
+        Case "BOILER"
+          DivisionID = "AFBC','BLR_SPR','CFBC','HRSG','OILGAS','TG','WHRB','IPAC"
+        Case "SMD"
+          DivisionID = "SPDR"
+        Case "EPC"
+          DivisionID = "EPC01"
+        Case "APC"
+          DivisionID = "ESP"
+
+
+        Case "FGD"
+          DivisionID = "SDFGD"
+
+      End Select
+
+
+
+
+
+
+      Dim Sql As String = ""
+      Using Con As SqlConnection = New SqlConnection(SIS.SYS.SQLDatabase.DBCommon.GetBaaNConnectionString() & ";Connection Timeout=50000")
+        Con.Open()
+
+
+
+
+        Select Case det
+
+          Case "Dueforissue_CurrentM_A"
+            Sql = " Select aa.t_pcod,aa.t_cprj,(select t_dsca from ttcmcs052200 where ttcmcs052200.t_cprj=aa.t_cprj) as Project_Name,aa.t_docn,aa.t_revn,aa.t_dsca,convert(date, dateadd(n,330,aa.t_acdt)) As t_acdt from tdmisg140200 As aa where t_resp in ('" & DisciplineID & "') AND t_pcod IN ('" & DivisionID & "') and year(dateadd(n,330,aa.t_acdt)) in "
+                        Sql &= "(" & YearID & ") and month(dateadd(n,330,aa.t_acdt)) in (" & MonthID & ") And aa.t_docn not in (select bb.t_docn from tdmisg132200 as bb "
+                        Sql &= "inner join tdmisg131200 as cc on bb.t_tran=cc.t_tran where year(dateadd(n,330,cc.t_isdt)) in (" & YearID & ") and  cc.t_stat in (5) and month(dateadd(n,330,cc.t_isdt)) in "
+                        Sql &= "(" & MonthID & ")and bb.t_revn = aa.t_revn) order by aa.t_acdt desc"
+                    Case "Dueforissue_previousM_B"
+            Sql = " Select aa.t_pcod,aa.t_cprj,(select t_dsca from ttcmcs052200 where ttcmcs052200.t_cprj=aa.t_cprj) as Project_Name,aa.t_docn,aa.t_revn,aa.t_dsca,convert(date, dateadd(n,330,aa.t_acdt)) As t_acdt from tdmisg140200 As aa where t_resp in ('" & DisciplineID & "') AND t_pcod IN ('" & DivisionID & "') and aa.t_acdt >= dateadd(d,-30,getdate())"
+                        Sql &= " And aa.t_docn not in (select bb.t_docn from tdmisg132200 as bb "
+                        Sql &= " inner join tdmisg131200 as cc on bb.t_tran=cc.t_tran where cc.t_stat in (5) And cc.t_isdt >= dateadd(d,-30,getdate())and bb.t_revn = aa.t_revn)  order by aa.t_acdt desc"
+
+                    Case "Dueforissue_Total_C"
+            Sql = " Select aa.t_pcod,aa.t_cprj,(select t_dsca from ttcmcs052200 where ttcmcs052200.t_cprj=aa.t_cprj) as Project_Name,aa.t_docn,aa.t_revn,aa.t_dsca,convert(date, dateadd(n,330,aa.t_acdt)) As t_acdt from tdmisg140200 As aa where t_resp in ('" & DisciplineID & "') AND t_pcod IN ('" & DivisionID & "') and aa.t_acdt >= dateadd(d,-60,getdate())"
+                        Sql &= " And aa.t_docn  not in (select bb.t_docn from tdmisg132200 as bb "
+                        Sql &= " inner join tdmisg131200 as cc on bb.t_tran=cc.t_tran where cc.t_stat in (5) And cc.t_isdt >= dateadd(d,-60,getdate())and bb.t_revn = aa.t_revn)  order by aa.t_acdt desc"
+
+
+                    Case "Dueforissue_Total_D"
+                        Sql = " Select aa.t_pcod,aa.t_cprj,(select t_dsca from ttcmcs052200 where ttcmcs052200.t_cprj=aa.t_cprj) as Project_Name,aa.t_docn,aa.t_revn,aa.t_dsca,convert(date, dateadd(n,330,aa.t_acdt)) As t_acdt from tdmisg140200 As aa where t_resp in ('" & DisciplineID & "') AND t_pcod IN ('" & DivisionID & "') and aa.t_acdt >= dateadd(d,-100,getdate())"
+                        Sql &= " And aa.t_docn  not in (select bb.t_docn from tdmisg132200 as bb "
+                        Sql &= " inner join tdmisg131200 as cc on bb.t_tran=cc.t_tran where cc.t_stat in (5) And cc.t_isdt >= dateadd(d,-100,getdate())and bb.t_revn = aa.t_revn)  order by aa.t_acdt desc"
+
+
+                End Select
 
         Using Cmd As SqlCommand = Con.CreateCommand()
           Cmd.CommandType = CommandType.Text
@@ -1050,7 +1137,7 @@ Namespace SIS.DD
 
 
 
-            Sql = "Select rec.t_rcno As ReceiptID,(select TOP 1 t_pcod from tdmisg140200 where tdmisg140200.t_cprj=rec.t_cprj) as PType, "
+            Sql = "Select rec.t_bpid as t_bpid, ISNULL((Select t_nama from ttccom100200  where t_bpid =rec.t_bpid),'-') as Sname,rec.t_rcno As ReceiptID,(select TOP 1 t_pcod from tdmisg140200 where tdmisg140200.t_cprj=rec.t_cprj) as PType, "
             Sql &= "  (Case rec.t_stat "
             Sql &= " when 1 then 'Submitted' "
             Sql &= " when 2 then 'Document linked' "
@@ -1083,7 +1170,7 @@ Namespace SIS.DD
 
 
           Case "IDMSPre_Submitted"
-            Sql = "Select rec.t_rcno As ReceiptID,(select TOP 1 t_pcod from tdmisg140200 where tdmisg140200.t_cprj=rec.t_cprj) as PType,  "
+            Sql = "Select rec.t_bpid as t_bpid, ISNULL((Select t_nama from ttccom100200  where t_bpid =rec.t_bpid),'-') as Sname,rec.t_rcno As ReceiptID,(select TOP 1 t_pcod from tdmisg140200 where tdmisg140200.t_cprj=rec.t_cprj) as PType,  "
             Sql &= "  (Case rec.t_stat "
             Sql &= " when 1 then 'Submitted' "
             Sql &= " when 2 then 'Document linked' "
@@ -1115,7 +1202,7 @@ Namespace SIS.DD
             Sql &= " order by Rageindays desc"
 
           Case "IDMSPre_Document_linked"
-            Sql = "Select rec.t_rcno As ReceiptID,(select TOP 1 t_pcod from tdmisg140200 where tdmisg140200.t_cprj=rec.t_cprj) as PType,  "
+            Sql = "Select rec.t_bpid as t_bpid, ISNULL((Select t_nama from ttccom100200  where t_bpid =rec.t_bpid),'-') as Sname,rec.t_rcno As ReceiptID,(select TOP 1 t_pcod from tdmisg140200 where tdmisg140200.t_cprj=rec.t_cprj) as PType,  "
             Sql &= "  (Case rec.t_stat "
             Sql &= " when 1 then 'Submitted' "
             Sql &= " when 2 then 'Document linked' "
@@ -1146,7 +1233,7 @@ Namespace SIS.DD
             Sql &= " And year(rec.t_date) in (" & YearID & ") And month(rec.t_date) in (" & MonthID & ")   and rec.t_stat=2"
             Sql &= " order by Rageindays desc"
           Case "IDMSPre_Under_Evaluation"
-            Sql = "Select rec.t_rcno As ReceiptID,(select TOP 1 t_pcod from tdmisg140200 where tdmisg140200.t_cprj=rec.t_cprj) as PType,  "
+            Sql = "Select rec.t_bpid as t_bpid, ISNULL((Select t_nama from ttccom100200  where t_bpid =rec.t_bpid),'-') as Sname, rec.t_rcno As ReceiptID,(select TOP 1 t_pcod from tdmisg140200 where tdmisg140200.t_cprj=rec.t_cprj) as PType,  "
             Sql &= "  (Case rec.t_stat "
             Sql &= " when 1 then 'Submitted' "
             Sql &= " when 2 then 'Document linked' "
@@ -1177,7 +1264,7 @@ Namespace SIS.DD
             Sql &= " And year(rec.t_date) in (" & YearID & ") And month(rec.t_date) in (" & MonthID & ")   and rec.t_stat=3"
             Sql &= " order by Rageindays desc"
           Case "IDMSPre_Comments_Submitted"
-            Sql = "Select rec.t_rcno As ReceiptID,(select TOP 1 t_pcod from tdmisg140200 where tdmisg140200.t_cprj=rec.t_cprj) as PType,  "
+            Sql = "Select rec.t_bpid as t_bpid, ISNULL((Select t_nama from ttccom100200  where t_bpid =rec.t_bpid),'-') as Sname, rec.t_rcno As ReceiptID,(select TOP 1 t_pcod from tdmisg140200 where tdmisg140200.t_cprj=rec.t_cprj) as PType,  "
             Sql &= "  (Case rec.t_stat "
             Sql &= " when 1 then 'Submitted' "
             Sql &= " when 2 then 'Document linked' "
@@ -1208,7 +1295,7 @@ Namespace SIS.DD
             Sql &= " And year(rec.t_date) in (" & YearID & ") And month(rec.t_date) in (" & MonthID & ")   and rec.t_stat=4"
             Sql &= " order by Rageindays desc"
           Case "IDMSPre_Technically_Cleared"
-            Sql = "Select rec.t_rcno As ReceiptID,(select TOP 1 t_pcod from tdmisg140200 where tdmisg140200.t_cprj=rec.t_cprj) as PType,  "
+            Sql = "Select rec.t_bpid as t_bpid, ISNULL((Select t_nama from ttccom100200  where t_bpid =rec.t_bpid),'-') as Sname, rec.t_rcno As ReceiptID,(select TOP 1 t_pcod from tdmisg140200 where tdmisg140200.t_cprj=rec.t_cprj) as PType,  "
             Sql &= "  (Case rec.t_stat "
             Sql &= " when 1 then 'Submitted' "
             Sql &= " when 2 then 'Document linked' "
@@ -1239,7 +1326,7 @@ Namespace SIS.DD
             Sql &= " And year(rec.t_date) in (" & YearID & ") And month(rec.t_date) in (" & MonthID & ")   and rec.t_stat=5"
             Sql &= " order by Rageindays desc"
           Case "IDMSPre_Transmittal_Issued"
-            Sql = "Select rec.t_rcno As ReceiptID,(select TOP 1 t_pcod from tdmisg140200 where tdmisg140200.t_cprj=rec.t_cprj) as PType,  "
+            Sql = "Select rec.t_bpid as t_bpid, ISNULL((Select t_nama from ttccom100200  where t_bpid =rec.t_bpid),'-') as Sname, rec.t_rcno As ReceiptID,(select TOP 1 t_pcod from tdmisg140200 where tdmisg140200.t_cprj=rec.t_cprj) as PType,  "
             Sql &= "  (Case rec.t_stat "
             Sql &= " when 1 then 'Submitted' "
             Sql &= " when 2 then 'Document linked' "
@@ -1270,7 +1357,7 @@ Namespace SIS.DD
             Sql &= " And year(rec.t_date) in (" & YearID & ") And month(rec.t_date) in (" & MonthID & ")   and rec.t_stat=6"
             Sql &= " order by Rageindays desc"
           Case "IDMSPre_Superceded"
-            Sql = "Select rec.t_rcno As ReceiptID,(select TOP 1 t_pcod from tdmisg140200 where tdmisg140200.t_cprj=rec.t_cprj) as PType,  "
+            Sql = "Select rec.t_bpid as t_bpid, ISNULL((Select t_nama from ttccom100200  where t_bpid =rec.t_bpid),'-') as Sname, rec.t_rcno As ReceiptID,(select TOP 1 t_pcod from tdmisg140200 where tdmisg140200.t_cprj=rec.t_cprj) as PType,  "
             Sql &= "  (Case rec.t_stat "
             Sql &= " when 1 then 'Submitted' "
             Sql &= " when 2 then 'Document linked' "
@@ -1301,7 +1388,7 @@ Namespace SIS.DD
             Sql &= " And year(rec.t_date) in (" & YearID & ") And month(rec.t_date) in (" & MonthID & ")   and rec.t_stat=7"
             Sql &= " order by Rageindays desc"
           Case "IDMSPre_Closed"
-            Sql = "Select rec.t_rcno As ReceiptID,(select TOP 1 t_pcod from tdmisg140200 where tdmisg140200.t_cprj=rec.t_cprj) as PType,  "
+            Sql = "Select rec.t_bpid as t_bpid, ISNULL((Select t_nama from ttccom100200  where t_bpid =rec.t_bpid),'-') as Sname, rec.t_rcno As ReceiptID,(select TOP 1 t_pcod from tdmisg140200 where tdmisg140200.t_cprj=rec.t_cprj) as PType,  "
             Sql &= "  (Case rec.t_stat "
             Sql &= " when 1 then 'Submitted' "
             Sql &= " when 2 then 'Document linked' "
@@ -1335,7 +1422,7 @@ Namespace SIS.DD
 
 
 
-            Sql = "Select rec.t_rcno As ReceiptID,(select TOP 1 t_pcod from tdmisg140200 where tdmisg140200.t_cprj=rec.t_cprj) as PType,  "
+            Sql = "Select rec.t_bpid as t_bpid, ISNULL((Select t_nama from ttccom100200  where t_bpid =rec.t_bpid),'-') as Sname, rec.t_rcno As ReceiptID,(select TOP 1 t_pcod from tdmisg140200 where tdmisg140200.t_cprj=rec.t_cprj) as PType,  "
             Sql &= "  (Case rec.t_stat "
             Sql &= " when 1 then 'Submitted' "
             Sql &= " when 2 then 'Document linked' "
@@ -1367,7 +1454,7 @@ Namespace SIS.DD
 
 
           Case "All_IDMSPre_Submitted"
-            Sql = "Select rec.t_rcno As ReceiptID,(select TOP 1 t_pcod from tdmisg140200 where tdmisg140200.t_cprj=rec.t_cprj) as PType,  "
+            Sql = "Select rec.t_bpid as t_bpid, ISNULL((Select t_nama from ttccom100200  where t_bpid =rec.t_bpid),'-') as Sname, rec.t_rcno As ReceiptID,(select TOP 1 t_pcod from tdmisg140200 where tdmisg140200.t_cprj=rec.t_cprj) as PType,  "
             Sql &= "  (Case rec.t_stat "
             Sql &= " when 1 then 'Submitted' "
             Sql &= " when 2 then 'Document linked' "
@@ -1399,7 +1486,7 @@ Namespace SIS.DD
             Sql &= " order by Rageindays desc"
 
           Case "All_IDMSPre_Document_linked"
-            Sql = "Select rec.t_rcno As ReceiptID,(select TOP 1 t_pcod from tdmisg140200 where tdmisg140200.t_cprj=rec.t_cprj) as PType,  "
+            Sql = "Select rec.t_bpid as t_bpid, ISNULL((Select t_nama from ttccom100200  where t_bpid =rec.t_bpid),'-') as Sname, rec.t_rcno As ReceiptID,(select TOP 1 t_pcod from tdmisg140200 where tdmisg140200.t_cprj=rec.t_cprj) as PType,  "
             Sql &= "  (Case rec.t_stat "
             Sql &= " when 1 then 'Submitted' "
             Sql &= " when 2 then 'Document linked' "
@@ -1430,7 +1517,7 @@ Namespace SIS.DD
             Sql &= " and rec.t_stat=2"
             Sql &= " order by Rageindays desc"
           Case "All_IDMSPre_Under_Evaluation"
-            Sql = "Select rec.t_rcno As ReceiptID,(select TOP 1 t_pcod from tdmisg140200 where tdmisg140200.t_cprj=rec.t_cprj) as PType,  "
+            Sql = "Select rec.t_bpid as t_bpid, ISNULL((Select t_nama from ttccom100200  where t_bpid =rec.t_bpid),'-') as Sname, rec.t_rcno As ReceiptID,(select TOP 1 t_pcod from tdmisg140200 where tdmisg140200.t_cprj=rec.t_cprj) as PType,  "
             Sql &= "  (Case rec.t_stat "
             Sql &= " when 1 then 'Submitted' "
             Sql &= " when 2 then 'Document linked' "
@@ -1461,7 +1548,7 @@ Namespace SIS.DD
             Sql &= " and rec.t_stat=3"
             Sql &= " order by Rageindays desc"
           Case "All_IDMSPre_Comments_Submitted"
-            Sql = "Select rec.t_rcno As ReceiptID,(select TOP 1 t_pcod from tdmisg140200 where tdmisg140200.t_cprj=rec.t_cprj) as PType,  "
+            Sql = "Select rec.t_bpid as t_bpid, ISNULL((Select t_nama from ttccom100200  where t_bpid =rec.t_bpid),'-') as Sname, rec.t_rcno As ReceiptID,(select TOP 1 t_pcod from tdmisg140200 where tdmisg140200.t_cprj=rec.t_cprj) as PType,  "
             Sql &= "  (Case rec.t_stat "
             Sql &= " when 1 then 'Submitted' "
             Sql &= " when 2 then 'Document linked' "
@@ -1492,7 +1579,7 @@ Namespace SIS.DD
             Sql &= "   and rec.t_stat=4"
             Sql &= " order by Rageindays desc"
           Case "All_IDMSPre_Technically_Cleared"
-            Sql = "Select rec.t_rcno As ReceiptID,(select TOP 1 t_pcod from tdmisg140200 where tdmisg140200.t_cprj=rec.t_cprj) as PType,  "
+            Sql = "Select rec.t_bpid as t_bpid, ISNULL((Select t_nama from ttccom100200  where t_bpid =rec.t_bpid),'-') as Sname, rec.t_rcno As ReceiptID,(select TOP 1 t_pcod from tdmisg140200 where tdmisg140200.t_cprj=rec.t_cprj) as PType,  "
             Sql &= "  (Case rec.t_stat "
             Sql &= " when 1 then 'Submitted' "
             Sql &= " when 2 then 'Document linked' "
@@ -1523,7 +1610,7 @@ Namespace SIS.DD
             Sql &= "   and rec.t_stat=5"
             Sql &= " order by Rageindays desc"
           Case "All_IDMSPre_Transmittal_Issued"
-            Sql = "Select rec.t_rcno As ReceiptID,(select TOP 1 t_pcod from tdmisg140200 where tdmisg140200.t_cprj=rec.t_cprj) as PType,  "
+            Sql = "Select rec.t_bpid as t_bpid, ISNULL((Select t_nama from ttccom100200  where t_bpid =rec.t_bpid),'-') as Sname, rec.t_rcno As ReceiptID,(select TOP 1 t_pcod from tdmisg140200 where tdmisg140200.t_cprj=rec.t_cprj) as PType,  "
             Sql &= "  (Case rec.t_stat "
             Sql &= " when 1 then 'Submitted' "
             Sql &= " when 2 then 'Document linked' "
@@ -1554,7 +1641,7 @@ Namespace SIS.DD
             Sql &= "   and rec.t_stat=6"
             Sql &= " order by Rageindays desc"
           Case "All_IDMSPre_Superceded"
-            Sql = "Select rec.t_rcno As ReceiptID,(select TOP 1 t_pcod from tdmisg140200 where tdmisg140200.t_cprj=rec.t_cprj) as PType,  "
+            Sql = "Select rec.t_bpid as t_bpid, ISNULL((Select t_nama from ttccom100200  where t_bpid =rec.t_bpid),'-') as Sname, rec.t_rcno As ReceiptID,(select TOP 1 t_pcod from tdmisg140200 where tdmisg140200.t_cprj=rec.t_cprj) as PType,  "
             Sql &= "  (Case rec.t_stat "
             Sql &= " when 1 then 'Submitted' "
             Sql &= " when 2 then 'Document linked' "
@@ -1585,7 +1672,7 @@ Namespace SIS.DD
             Sql &= "    and rec.t_stat=7"
             Sql &= " order by Rageindays desc"
           Case "All_IDMSPre_Closed"
-            Sql = "Select rec.t_rcno As ReceiptID,(select TOP 1 t_pcod from tdmisg140200 where tdmisg140200.t_cprj=rec.t_cprj) as PType,  "
+            Sql = "Select rec.t_bpid as t_bpid, ISNULL((Select t_nama from ttccom100200  where t_bpid =rec.t_bpid),'-') as Sname, rec.t_rcno As ReceiptID,(select TOP 1 t_pcod from tdmisg140200 where tdmisg140200.t_cprj=rec.t_cprj) as PType,  "
             Sql &= "  (Case rec.t_stat "
             Sql &= " when 1 then 'Submitted' "
             Sql &= " when 2 then 'Document linked' "

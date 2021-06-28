@@ -5,6 +5,7 @@ Imports System.Data
 Imports System.Data.SqlClient
 Imports System.ComponentModel
 Imports System.Web.UI.DataVisualization.Charting
+
 Namespace SIS.DD
   <DataObject()>
   Public Class DBDiscipline
@@ -147,7 +148,12 @@ Namespace SIS.DD
     Public Property Electrical As String = ""
     Public Property Quality As String = ""
 
-    Public Shared Function GetDPMDLDB(ByVal DivisionID As String, ByVal DisciplineID As String, ByVal MonthId As Integer, ByVal YearId As String) As DBDiscipline
+    Public Property Dueforissue_CurrentM_A As String = ""
+    Public Property Dueforissue_previousM_B As String = ""
+        Public Property Dueforissue_Total_C As String = ""
+        Public Property Dueforissue_Total_D As String = ""
+
+        Public Shared Function GetDPMDLDB(ByVal DivisionID As String, ByVal DisciplineID As String, ByVal MonthId As Integer, ByVal YearId As String) As DBDiscipline
       If DivisionID = "" Then Return Nothing
       If DisciplineID = "CI" Then DisciplineID = "C&I"
 
@@ -278,7 +284,88 @@ Namespace SIS.DD
       Return mRet
     End Function
 
+    Public Shared Function GetDIssueDB(ByVal DivisionID As String, ByVal DisciplineID As String, ByVal MonthId As Integer, ByVal YearId As String) As DBDiscipline
+      If DivisionID = "" Then Return Nothing
+      If DisciplineID = "CI" Then DisciplineID = "C&I"
 
+
+      Select Case DivisionID
+        Case "BOILER"
+          DivisionID = "AFBC','BLR_SPR','CFBC','HRSG','OILGAS','TG','WHRB','IPAC"
+        Case "SMD"
+          DivisionID = "SPDR"
+        Case "EPC"
+          DivisionID = "EPC01"
+        Case "APC"
+          DivisionID = "ESP"
+        Case "FGD"
+          DivisionID = "SDFGD"
+
+      End Select
+
+
+      Dim mRet As New DBDiscipline
+      mRet.DivisionID = DivisionID
+      mRet.DisciplineID = DisciplineID
+      mRet.MonthID = MonthId
+      mRet.YearID = YearId
+
+      Dim Sql As String = ""
+      Using Con As SqlConnection = New SqlConnection(SIS.SYS.SQLDatabase.DBCommon.GetBaaNConnectionString() & ";Connection Timeout=500000")
+
+        Con.Open()
+
+
+        Sql = " Select Count(*) from tdmisg140200 As aa where t_resp in ('" & DisciplineID & "') AND t_pcod IN ('" & DivisionID & "') and year(dateadd(n,330,aa.t_acdt)) in "
+                Sql &= "(" & YearId & ") and month(dateadd(n,330,aa.t_acdt)) in (" & MonthId & ") And aa.t_docn  not in (select bb.t_docn from tdmisg132200 as bb "
+                Sql &= "inner join tdmisg131200 as cc on bb.t_tran=cc.t_tran where year(dateadd(n,330,cc.t_isdt)) in (" & YearId & ") and  cc.t_stat in (5) and month(dateadd(n,330,cc.t_isdt)) in "
+                Sql &= "(" & MonthId & ") and bb.t_revn = aa.t_revn)"
+                Using Cmd As SqlCommand = Con.CreateCommand()
+          Cmd.CommandType = CommandType.Text
+          Cmd.CommandText = Sql
+          Cmd.CommandTimeout = 50000
+          mRet.Dueforissue_CurrentM_A = Cmd.ExecuteScalar
+        End Using
+
+
+
+        Sql = " Select Count(*) from tdmisg140200 As aa where t_resp in ('" & DisciplineID & "') AND t_pcod IN ('" & DivisionID & "') and aa.t_acdt >= dateadd(d,-30,getdate())"
+                Sql &= " And aa.t_docn not in (select bb.t_docn from tdmisg132200 as bb "
+                Sql &= " inner join tdmisg131200 as cc on bb.t_tran=cc.t_tran where cc.t_stat in (5) And cc.t_isdt >= dateadd(d,-30,getdate())and bb.t_revn = aa.t_revn)"
+
+
+
+
+                Using Cmd As SqlCommand = Con.CreateCommand()
+          Cmd.CommandType = CommandType.Text
+          Cmd.CommandText = Sql
+          Cmd.CommandTimeout = 50000
+          mRet.Dueforissue_previousM_B = Cmd.ExecuteScalar
+        End Using
+
+        Sql = " Select Count(*) from tdmisg140200 As aa where t_resp in ('" & DisciplineID & "') AND t_pcod IN ('" & DivisionID & "') and aa.t_acdt >= dateadd(d,-60,getdate())"
+                Sql &= " And aa.t_docn not in (select bb.t_docn from tdmisg132200 as bb "
+                Sql &= " inner join tdmisg131200 as cc on bb.t_tran=cc.t_tran where cc.t_stat in (5) And cc.t_isdt >= dateadd(d,-60,getdate()) and bb.t_revn = aa.t_revn)"
+                Using Cmd As SqlCommand = Con.CreateCommand()
+          Cmd.CommandType = CommandType.Text
+          Cmd.CommandText = Sql
+          Cmd.CommandTimeout = 50000
+          mRet.Dueforissue_Total_C = Cmd.ExecuteScalar
+        End Using
+
+                Sql = " Select Count(*) from tdmisg140200 As aa where t_resp in ('" & DisciplineID & "') AND t_pcod IN ('" & DivisionID & "') and aa.t_acdt >= dateadd(d,-100,getdate())"
+                Sql &= " And aa.t_docn not in (select bb.t_docn from tdmisg132200 as bb "
+                Sql &= " inner join tdmisg131200 as cc on bb.t_tran=cc.t_tran where cc.t_stat in (5) And cc.t_isdt >= dateadd(d,-100,getdate()) and bb.t_revn = aa.t_revn)"
+                Using Cmd As SqlCommand = Con.CreateCommand()
+                    Cmd.CommandType = CommandType.Text
+                    Cmd.CommandText = Sql
+                    Cmd.CommandTimeout = 50000
+                    mRet.Dueforissue_Total_D = Cmd.ExecuteScalar
+                End Using
+
+            End Using
+      Return mRet
+    End Function
     Public Shared Function GetDSARDB(ByVal DivisionID As String, ByVal DisciplineID As String, ByVal MonthId As Integer, ByVal YearId As String) As DBDiscipline
       Dim PrjID As String = ""
       If DivisionID = "" Then Return Nothing

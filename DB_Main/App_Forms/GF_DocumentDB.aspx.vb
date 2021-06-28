@@ -15,8 +15,8 @@ Partial Class GF_DocumentDB
 
 
     Private Sub cmdSubmit_Click(sender As Object, e As EventArgs) Handles cmdSubmit.Click
-    vi.Visible = False
-    sd.Visible = False
+    ' vi.Visible = False
+    ' sd.Visible = False
     Dim DocumentID As String = ""
         Dim RevisionNO As String = ""
         DocumentID = F_t_docn.Text.ToUpper()
@@ -45,6 +45,8 @@ Partial Class GF_DocumentDB
         If DocumentID.Length < 24 Then Exit Sub
         If DocumentID.Length > 25 Then Exit Sub
         Dim x As SIS.DB.DBDocumentDB = SIS.DB.DBDocumentDB.GetDocumentDB(DocumentID, RevisionNO)
+        Dim Det As String = F_t_docn.Text
+        Dim empID As String = F_t_revn.Text
         'Dim y As SIS.DB.PRE_Information = SIS.DB.PRE_Information.GetPREDATA(DocumentID, RevisionNO)
         'If RevisionNO <> "00" Or RevisionNO <> "01" Or RevisionNO <> "02" Then Exit Sub
 
@@ -52,7 +54,7 @@ Partial Class GF_DocumentDB
         If x.ProjectID = "" Then
             notfound.Visible = True
             notfound_text.Visible = True
-
+            V2B.Visible = True
             found.Visible = False
 
             poi.Visible = False
@@ -70,10 +72,11 @@ Partial Class GF_DocumentDB
       partbom.Visible = False
       ref.Visible = False
             dwg.Visible = False
+            'ShowV2BData(Det, empID)
         Else
             notfound.Visible = False
             found.Visible = True
-
+            V2B.Visible = True
             revision_text.Visible = True
         F_t_revn.Visible = True
 
@@ -85,9 +88,9 @@ Partial Class GF_DocumentDB
         btn_ProjectID.Font.Name = "Comic Sans MS"
         btn_ProjectID.Font.Bold = True
 
-
-        'Year
-        DivProjectYear.Visible = True
+            V2BUserID.Text = x.V2buserid
+            'Year
+            DivProjectYear.Visible = True
         DivProjectYear1.Visible = True
         btn_ProjectYear.Text = x.Year
         btn_ProjectYear.Font.Size = 10
@@ -378,10 +381,12 @@ Partial Class GF_DocumentDB
             'di.Visible = True
             'pi.Visible = True
             poi.Visible = True 'PO
-      ' pmdli.Visible = False
+            ' pmdli.Visible = False
 
-      mi.Visible = True
-        pi.Visible = True
+            mi.Visible = True
+            V2B.Visible = True
+            pi.Visible = True
+
             ii.Visible = True 'Indent
             ti.Visible = True
         di.Visible = True
@@ -459,7 +464,7 @@ Partial Class GF_DocumentDB
         Btn_IsgecDataSource.Text = x.ISGEC_DATA_Source
 
         If (x.doc_releasedate = "01/01/1970") Then x.doc_releasedate = "-"
-
+        End If
 
         Btn_docreleasedate.Text = x.doc_releasedate
         'Btn_IsgecDataSource.Font.Size = 10
@@ -469,23 +474,23 @@ Partial Class GF_DocumentDB
         Btn_Approval.Text = x.For_Approval
         Btn_Softwareused.Text = x.SoftwareUsed
         Btn_MachineName.Text = x.MachineName
-            'btn_IndentNumber.Text = x.IndentNumber
-            'btn_IndentDate.Text = x.IndentDate
-            'btn_IndentRequester.Text = x.IndentRequester & " - " & x.IndentRequestername
-            'btn_PONumber.Text = x.PONumber
-            'btn_PODate.Text = x.PODate
-            'btn_POSupplier.Text = x.POsupplier & " - " & x.POsuppliername
-            'btn_POSuppliername.Visible = False
-            'btn_POSuppliername.Text = x.POsuppliername
-            'btn_POBuyer.Text = x.POBuyer & " - " & x.POBuyername
+        'btn_IndentNumber.Text = x.IndentNumber
+        'btn_IndentDate.Text = x.IndentDate
+        'btn_IndentRequester.Text = x.IndentRequester & " - " & x.IndentRequestername
+        'btn_PONumber.Text = x.PONumber
+        'btn_PODate.Text = x.PODate
+        'btn_POSupplier.Text = x.POsupplier & " - " & x.POsuppliername
+        'btn_POSuppliername.Visible = False
+        'btn_POSuppliername.Text = x.POsuppliername
+        'btn_POBuyer.Text = x.POBuyer & " - " & x.POBuyername
 
-            'btn_transmittalid.Text = x.Transmittalid
+        'btn_transmittalid.Text = x.Transmittalid
 
-            Dim Det As String = F_t_docn.Text
-        Dim empID As String = F_t_revn.Text
+
         ShowPData(Det, empID)
-        ShowMData(Det, empID)
-        ShowBData(Det, empID)
+            ShowMData(Det, empID)
+            ShowV2BData(Det, empID)
+            ShowBData(Det, empID)
       ShowPaData(Det, empID)
       ShowrData(Det, empID)
         ShowTData(Det, empID)
@@ -496,8 +501,9 @@ Partial Class GF_DocumentDB
             ShowPostdData(Det, empID)
             ShowIData(Det, empID)
             ShowPOData(Det, empID)
-            'ShowPredData(Det, empID)
-        End If
+
+        'ShowPredData(Det, empID)
+
     End Sub
 
     Public Sub ShowBData(ByVal DocumentID As String, ByVal RevisionNo As String)
@@ -1331,452 +1337,452 @@ Partial Class GF_DocumentDB
         pnl_iDetails.Controls.Add(tbl)
 
     End Sub
-  Private Sub ShowVRData()
-    Dim Data As List(Of SIS.DB.VR_Information) = SIS.DB.VR_Information.GetVRDATA()
-
-    If Data.Count = 0 Then Exit Sub
-    Dim tbl As New Table
-    With tbl
-      .GridLines = GridLines.Both
-      .BorderWidth = 2
-      .CellSpacing = 2
-      .Width = Unit.Percentage(100)
-      .CssClass = "table-light"
-      '  .CssClass = "table-danger table-bordered thead-primary table-hover"
-    End With
-    Dim tr As TableRow = Nothing
-    Dim td As TableCell = Nothing
-
-
-
-    'Header
-    tr = New TableRow
-
-    td = New TableCell
-    td.Text = "S.NO"
-    With td
-      .Font.Bold = True
-      .Font.Size = FontUnit.Point(10)
-    End With
-    tr.Cells.Add(td)
-
-
-
-    td = New TableCell
-    With td
-      .Font.Bold = True
-      .Font.Size = FontUnit.Point(10)
-    End With
-    td.Text = "DOCUMENT NUMBER"
-    tr.Cells.Add(td)
-
-
-    td = New TableCell
-    With td
-      .Font.Bold = True
-      .Font.Size = FontUnit.Point(10)
-    End With
-    td.Text = "REV."
-    tr.Cells.Add(td)
-
-    td = New TableCell
-    With td
-      .Font.Bold = True
-      .Font.Size = FontUnit.Point(10)
-    End With
-    td.Text = "TITTLE"
-    tr.Cells.Add(td)
-
-
-    td = New TableCell
-    With td
-      .Font.Bold = True
-      .Font.Size = FontUnit.Point(10)
-    End With
-    td.Text = "TYPE"
-    tr.Cells.Add(td)
-
-    td = New TableCell
-    With td
-      .Font.Bold = True
-      .Font.Size = FontUnit.Point(10)
-    End With
-    td.Text = "SOURCE FILE"
-    tr.Cells.Add(td)
-
-    td = New TableCell
-    With td
-      .Font.Bold = True
-      .Font.Size = FontUnit.Point(10)
-    End With
-    td.Text = "UPLOADED TIME"
-    tr.Cells.Add(td)
-
-    td = New TableCell
-    With td
-      .Font.Bold = True
-      .Font.Size = FontUnit.Point(10)
-    End With
-    td.Text = "BY USER"
-    tr.Cells.Add(td)
-
-    td = New TableCell
-    With td
-      .Font.Bold = True
-      .Font.Size = FontUnit.Point(10)
-    End With
-    td.Text = "FROM MACHINE"
-    tr.Cells.Add(td)
-
-
-    td = New TableCell
-    With td
-      .Font.Bold = True
-      .Font.Size = FontUnit.Point(10)
-    End With
-    td.Text = "VAULT"
-    tr.Cells.Add(td)
-
-
-
-    td = New TableCell
-    With td
-      .Font.Bold = True
-      .Font.Size = FontUnit.Point(10)
-    End With
-    td.Text = "STATE"
-    tr.Cells.Add(td)
-
-
-    td = New TableCell
-    With td
-      .Font.Bold = True
-      .Font.Size = FontUnit.Point(10)
-    End With
-    td.Text = "WORKFLOW"
-    tr.Cells.Add(td)
-
-
-
-    tbl.Rows.Add(tr)
-
-    Dim I As Integer = 0
-    '================
-    For Each tmp As SIS.DB.VR_Information In Data
-      I += 1
-      tr = New TableRow
-
-      td = New TableCell
-      td.Text = I
-      tr.Cells.Add(td)
-
-
-      td = New TableCell
-      'Dim hl As New HyperLink
-      'With hl
-      '  .Text = tmp.t_docn
-      '  .NavigateUrl =
-      'End With
-      With td
-        .Font.Bold = True
-      End With
-      td.Text = tmp.t_docn
-      tr.Cells.Add(td)
-
-      td = New TableCell
-
-      td.Text = tmp.t_revn
-      tr.Cells.Add(td)
-
-      td = New TableCell
-
-      td.Text = tmp.t_dttl
-      tr.Cells.Add(td)
-
-      td = New TableCell
-      td.Text = tmp.t_type
-      tr.Cells.Add(td)
-
-      td = New TableCell
-      td.Text = tmp.t_sorc
-      tr.Cells.Add(td)
-
-      td = New TableCell
-      td.Text = tmp.t_sdat
-      With td
-        .Font.Bold = True
-      End With
-      tr.Cells.Add(td)
-
-      td = New TableCell
-      td.Text = tmp.t_user & "-" & tmp.t_usern
-      tr.Cells.Add(td)
-
-      td = New TableCell
-      td.Text = tmp.t_mach
-      tr.Cells.Add(td)
-
-      td = New TableCell
-      td.Text = tmp.t_name
-      tr.Cells.Add(td)
-
-      td = New TableCell
-      td.Text = tmp.t_stat
-      If td.Text = "Submitted" Then
-        td.ForeColor = Drawing.Color.Green
-        tr.BackColor = Drawing.Color.Yellow
-        With td
-          .Font.Bold = True
-        End With
-      End If
-
-      If td.Text = "Drawing Released" Then
-        'td.ForeColor = Drawing.Color.DarkGreen
-        tr.BackColor = Drawing.Color.LightGreen
-        With td
-          .Font.Bold = True
-        End With
-      End If
-
-      If td.Text = "Item Released" Then
-        'td.ForeColor = Drawing.Color.DarkGreen
-        tr.BackColor = Drawing.Color.GreenYellow
-        With td
-          .Font.Bold = True
-        End With
-      End If
-
-      If td.Text = "Expired" Then
-        'td.ForeColor = Drawing.Color.DarkGreen
-        tr.BackColor = Drawing.Color.Orange
-        With td
-          .Font.Bold = True
-        End With
-      End If
-      tr.Cells.Add(td)
-
-
-      td = New TableCell
-      td.Text = tmp.t_wfst
-      tr.Cells.Add(td)
-
-      tbl.Rows.Add(tr)
-
-
-    Next
-    '================
-    v2bDetails.Controls.Add(tbl)
-
-  End Sub
-  Private Sub ShowsdData()
-    Dim Data As List(Of SIS.DB.SD_Information) = SIS.DB.SD_Information.GetSDDATA()
-
-    If Data.Count = 0 Then Exit Sub
-    Dim tbl As New Table
-    With tbl
-      .GridLines = GridLines.Both
-      .BorderWidth = 2
-      .CellSpacing = 2
-      .Width = Unit.Percentage(100)
-      .CssClass = "table-light"
-      '  .CssClass = "table-danger table-bordered thead-primary table-hover"
-    End With
-    Dim tr As TableRow = Nothing
-    Dim td As TableCell = Nothing
-
-
-
-    'Header
-    tr = New TableRow
-
-    td = New TableCell
-    td.Text = "S.NO"
-    With td
-      .Font.Bold = True
-      .Font.Size = FontUnit.Point(10)
-    End With
-    tr.Cells.Add(td)
-
-
-
-    td = New TableCell
-    With td
-      .Font.Bold = True
-      .Font.Size = FontUnit.Point(10)
-    End With
-    td.Text = "Item Code"
-    tr.Cells.Add(td)
-
-
-    td = New TableCell
-    With td
-      .Font.Bold = True
-      .Font.Size = FontUnit.Point(10)
-    End With
-    td.Text = "DOCUMENT ID"
-    tr.Cells.Add(td)
-
-    td = New TableCell
-    With td
-      .Font.Bold = True
-      .Font.Size = FontUnit.Point(10)
-    End With
-    td.Text = "REV."
-    tr.Cells.Add(td)
-
-
-    td = New TableCell
-    With td
-      .Font.Bold = True
-      .Font.Size = FontUnit.Point(10)
-    End With
-    td.Text = "TITTLE"
-    tr.Cells.Add(td)
-
-    td = New TableCell
-    With td
-      .Font.Bold = True
-      .Font.Size = FontUnit.Point(10)
-    End With
-    td.Text = "PDF FILE"
-    tr.Cells.Add(td)
-
-    td = New TableCell
-    With td
-      .Font.Bold = True
-      .Font.Size = FontUnit.Point(10)
-    End With
-    td.Text = "FILE NAME"
-    tr.Cells.Add(td)
-
-    td = New TableCell
-    With td
-      .Font.Bold = True
-      .Font.Size = FontUnit.Point(10)
-    End With
-    td.Text = "ELEMENT"
-    tr.Cells.Add(td)
-
-    td = New TableCell
-    With td
-      .Font.Bold = True
-      .Font.Size = FontUnit.Point(10)
-    End With
-    td.Text = "WEIGHT"
-    tr.Cells.Add(td)
-
-
-    td = New TableCell
-    With td
-      .Font.Bold = True
-      .Font.Size = FontUnit.Point(10)
-    End With
-    td.Text = "DRAWN BY"
-    tr.Cells.Add(td)
-
-
-
-    td = New TableCell
-    With td
-      .Font.Bold = True
-      .Font.Size = FontUnit.Point(10)
-    End With
-    td.Text = "CHECKED BY"
-    tr.Cells.Add(td)
-
-
-    td = New TableCell
-    With td
-      .Font.Bold = True
-      .Font.Size = FontUnit.Point(10)
-    End With
-    td.Text = "APPROVED BY"
-    tr.Cells.Add(td)
-
-
-
-
-    tbl.Rows.Add(tr)
-
-    Dim I As Integer = 0
-    '================
-    For Each tmp As SIS.DB.SD_Information In Data
-      I += 1
-      tr = New TableRow
-
-      td = New TableCell
-      td.Text = I
-      tr.Cells.Add(td)
-
-
-      td = New TableCell
-      'Dim hl As New HyperLink
-      'With hl
-      '  .Text = tmp.t_docn
-      '  .NavigateUrl =
-      'End With
-      With td
-        .Font.Bold = True
-      End With
-      td.Text = tmp.t_item
-      tr.Cells.Add(td)
-
-      td = New TableCell
-      td.Text = tmp.t_docn
-      tr.Cells.Add(td)
-
-      td = New TableCell
-      td.Text = tmp.t_revn
-      tr.Cells.Add(td)
-
-      td = New TableCell
-
-      td.Text = tmp.t_dsca
-      tr.Cells.Add(td)
-
-      td = New TableCell
-      td.Text = tmp.t_pdfn
-      tr.Cells.Add(td)
-
-      td = New TableCell
-      td.Text = tmp.t_dttl
-      tr.Cells.Add(td)
-
-      td = New TableCell
-      td.Text = tmp.t_cspa
-      With td
-        .Font.Bold = True
-      End With
-      tr.Cells.Add(td)
-
-      td = New TableCell
-      td.Text = tmp.t_wght
-      tr.Cells.Add(td)
-
-      td = New TableCell
-      td.Text = tmp.t_drwn
-      tr.Cells.Add(td)
-
-      td = New TableCell
-      td.Text = tmp.t_chck
-      tr.Cells.Add(td)
-
-      td = New TableCell
-      td.Text = tmp.t_aprb
-
-      tr.Cells.Add(td)
-
-
-
-
-      tbl.Rows.Add(tr)
-
-
-    Next
-    '================
-    sdDetails.Controls.Add(tbl)
-
-  End Sub
+  'Private Sub ShowVRData()
+  '  Dim Data As List(Of SIS.DB.VR_Information) = SIS.DB.VR_Information.GetVRDATA()
+
+  '  If Data.Count = 0 Then Exit Sub
+  '  Dim tbl As New Table
+  '  With tbl
+  '    .GridLines = GridLines.Both
+  '    .BorderWidth = 2
+  '    .CellSpacing = 2
+  '    .Width = Unit.Percentage(100)
+  '    .CssClass = "table-light"
+  '    '  .CssClass = "table-danger table-bordered thead-primary table-hover"
+  '  End With
+  '  Dim tr As TableRow = Nothing
+  '  Dim td As TableCell = Nothing
+
+
+
+  '  'Header
+  '  tr = New TableRow
+
+  '  td = New TableCell
+  '  td.Text = "S.NO"
+  '  With td
+  '    .Font.Bold = True
+  '    .Font.Size = FontUnit.Point(10)
+  '  End With
+  '  tr.Cells.Add(td)
+
+
+
+  '  td = New TableCell
+  '  With td
+  '    .Font.Bold = True
+  '    .Font.Size = FontUnit.Point(10)
+  '  End With
+  '  td.Text = "DOCUMENT NUMBER"
+  '  tr.Cells.Add(td)
+
+
+  '  td = New TableCell
+  '  With td
+  '    .Font.Bold = True
+  '    .Font.Size = FontUnit.Point(10)
+  '  End With
+  '  td.Text = "REV."
+  '  tr.Cells.Add(td)
+
+  '  td = New TableCell
+  '  With td
+  '    .Font.Bold = True
+  '    .Font.Size = FontUnit.Point(10)
+  '  End With
+  '  td.Text = "TITTLE"
+  '  tr.Cells.Add(td)
+
+
+  '  td = New TableCell
+  '  With td
+  '    .Font.Bold = True
+  '    .Font.Size = FontUnit.Point(10)
+  '  End With
+  '  td.Text = "TYPE"
+  '  tr.Cells.Add(td)
+
+  '  td = New TableCell
+  '  With td
+  '    .Font.Bold = True
+  '    .Font.Size = FontUnit.Point(10)
+  '  End With
+  '  td.Text = "SOURCE FILE"
+  '  tr.Cells.Add(td)
+
+  '  td = New TableCell
+  '  With td
+  '    .Font.Bold = True
+  '    .Font.Size = FontUnit.Point(10)
+  '  End With
+  '  td.Text = "UPLOADED TIME"
+  '  tr.Cells.Add(td)
+
+  '  td = New TableCell
+  '  With td
+  '    .Font.Bold = True
+  '    .Font.Size = FontUnit.Point(10)
+  '  End With
+  '  td.Text = "BY USER"
+  '  tr.Cells.Add(td)
+
+  '  td = New TableCell
+  '  With td
+  '    .Font.Bold = True
+  '    .Font.Size = FontUnit.Point(10)
+  '  End With
+  '  td.Text = "FROM MACHINE"
+  '  tr.Cells.Add(td)
+
+
+  '  td = New TableCell
+  '  With td
+  '    .Font.Bold = True
+  '    .Font.Size = FontUnit.Point(10)
+  '  End With
+  '  td.Text = "VAULT"
+  '  tr.Cells.Add(td)
+
+
+
+  '  td = New TableCell
+  '  With td
+  '    .Font.Bold = True
+  '    .Font.Size = FontUnit.Point(10)
+  '  End With
+  '  td.Text = "STATE"
+  '  tr.Cells.Add(td)
+
+
+  '  td = New TableCell
+  '  With td
+  '    .Font.Bold = True
+  '    .Font.Size = FontUnit.Point(10)
+  '  End With
+  '  td.Text = "WORKFLOW"
+  '  tr.Cells.Add(td)
+
+
+
+  '  tbl.Rows.Add(tr)
+
+  '  Dim I As Integer = 0
+  '  '================
+  '  For Each tmp As SIS.DB.VR_Information In Data
+  '    I += 1
+  '    tr = New TableRow
+
+  '    td = New TableCell
+  '    td.Text = I
+  '    tr.Cells.Add(td)
+
+
+  '    td = New TableCell
+  '    'Dim hl As New HyperLink
+  '    'With hl
+  '    '  .Text = tmp.t_docn
+  '    '  .NavigateUrl =
+  '    'End With
+  '    With td
+  '      .Font.Bold = True
+  '    End With
+  '    td.Text = tmp.t_docn
+  '    tr.Cells.Add(td)
+
+  '    td = New TableCell
+
+  '    td.Text = tmp.t_revn
+  '    tr.Cells.Add(td)
+
+  '    td = New TableCell
+
+  '    td.Text = tmp.t_dttl
+  '    tr.Cells.Add(td)
+
+  '    td = New TableCell
+  '    td.Text = tmp.t_type
+  '    tr.Cells.Add(td)
+
+  '    td = New TableCell
+  '    td.Text = tmp.t_sorc
+  '    tr.Cells.Add(td)
+
+  '    td = New TableCell
+  '    td.Text = tmp.t_sdat
+  '    With td
+  '      .Font.Bold = True
+  '    End With
+  '    tr.Cells.Add(td)
+
+  '    td = New TableCell
+  '    td.Text = tmp.t_user & "-" & tmp.t_usern
+  '    tr.Cells.Add(td)
+
+  '    td = New TableCell
+  '    td.Text = tmp.t_mach
+  '    tr.Cells.Add(td)
+
+  '    td = New TableCell
+  '    td.Text = tmp.t_name
+  '    tr.Cells.Add(td)
+
+  '    td = New TableCell
+  '    td.Text = tmp.t_stat
+  '    If td.Text = "Submitted" Then
+  '      td.ForeColor = Drawing.Color.Green
+  '      tr.BackColor = Drawing.Color.Yellow
+  '      With td
+  '        .Font.Bold = True
+  '      End With
+  '    End If
+
+  '    If td.Text = "Drawing Released" Then
+  '      'td.ForeColor = Drawing.Color.DarkGreen
+  '      tr.BackColor = Drawing.Color.LightGreen
+  '      With td
+  '        .Font.Bold = True
+  '      End With
+  '    End If
+
+  '    If td.Text = "Item Released" Then
+  '      'td.ForeColor = Drawing.Color.DarkGreen
+  '      tr.BackColor = Drawing.Color.GreenYellow
+  '      With td
+  '        .Font.Bold = True
+  '      End With
+  '    End If
+
+  '    If td.Text = "Expired" Then
+  '      'td.ForeColor = Drawing.Color.DarkGreen
+  '      tr.BackColor = Drawing.Color.Orange
+  '      With td
+  '        .Font.Bold = True
+  '      End With
+  '    End If
+  '    tr.Cells.Add(td)
+
+
+  '    td = New TableCell
+  '    td.Text = tmp.t_wfst
+  '    tr.Cells.Add(td)
+
+  '    tbl.Rows.Add(tr)
+
+
+  '  Next
+  '  '================
+  '  'v2bDetails.Controls.Add(tbl)
+
+  'End Sub
+  'Private Sub ShowsdData()
+  '  Dim Data As List(Of SIS.DB.SD_Information) = SIS.DB.SD_Information.GetSDDATA()
+
+  '  If Data.Count = 0 Then Exit Sub
+  '  Dim tbl As New Table
+  '  With tbl
+  '    .GridLines = GridLines.Both
+  '    .BorderWidth = 2
+  '    .CellSpacing = 2
+  '    .Width = Unit.Percentage(100)
+  '    .CssClass = "table-light"
+  '    '  .CssClass = "table-danger table-bordered thead-primary table-hover"
+  '  End With
+  '  Dim tr As TableRow = Nothing
+  '  Dim td As TableCell = Nothing
+
+
+
+  '  'Header
+  '  tr = New TableRow
+
+  '  td = New TableCell
+  '  td.Text = "S.NO"
+  '  With td
+  '    .Font.Bold = True
+  '    .Font.Size = FontUnit.Point(10)
+  '  End With
+  '  tr.Cells.Add(td)
+
+
+
+  '  td = New TableCell
+  '  With td
+  '    .Font.Bold = True
+  '    .Font.Size = FontUnit.Point(10)
+  '  End With
+  '  td.Text = "Item Code"
+  '  tr.Cells.Add(td)
+
+
+  '  td = New TableCell
+  '  With td
+  '    .Font.Bold = True
+  '    .Font.Size = FontUnit.Point(10)
+  '  End With
+  '  td.Text = "DOCUMENT ID"
+  '  tr.Cells.Add(td)
+
+  '  td = New TableCell
+  '  With td
+  '    .Font.Bold = True
+  '    .Font.Size = FontUnit.Point(10)
+  '  End With
+  '  td.Text = "REV."
+  '  tr.Cells.Add(td)
+
+
+  '  td = New TableCell
+  '  With td
+  '    .Font.Bold = True
+  '    .Font.Size = FontUnit.Point(10)
+  '  End With
+  '  td.Text = "TITTLE"
+  '  tr.Cells.Add(td)
+
+  '  td = New TableCell
+  '  With td
+  '    .Font.Bold = True
+  '    .Font.Size = FontUnit.Point(10)
+  '  End With
+  '  td.Text = "PDF FILE"
+  '  tr.Cells.Add(td)
+
+  '  td = New TableCell
+  '  With td
+  '    .Font.Bold = True
+  '    .Font.Size = FontUnit.Point(10)
+  '  End With
+  '  td.Text = "FILE NAME"
+  '  tr.Cells.Add(td)
+
+  '  td = New TableCell
+  '  With td
+  '    .Font.Bold = True
+  '    .Font.Size = FontUnit.Point(10)
+  '  End With
+  '  td.Text = "ELEMENT"
+  '  tr.Cells.Add(td)
+
+  '  td = New TableCell
+  '  With td
+  '    .Font.Bold = True
+  '    .Font.Size = FontUnit.Point(10)
+  '  End With
+  '  td.Text = "WEIGHT"
+  '  tr.Cells.Add(td)
+
+
+  '  td = New TableCell
+  '  With td
+  '    .Font.Bold = True
+  '    .Font.Size = FontUnit.Point(10)
+  '  End With
+  '  td.Text = "DRAWN BY"
+  '  tr.Cells.Add(td)
+
+
+
+  '  td = New TableCell
+  '  With td
+  '    .Font.Bold = True
+  '    .Font.Size = FontUnit.Point(10)
+  '  End With
+  '  td.Text = "CHECKED BY"
+  '  tr.Cells.Add(td)
+
+
+  '  td = New TableCell
+  '  With td
+  '    .Font.Bold = True
+  '    .Font.Size = FontUnit.Point(10)
+  '  End With
+  '  td.Text = "APPROVED BY"
+  '  tr.Cells.Add(td)
+
+
+
+
+  '  tbl.Rows.Add(tr)
+
+  '  Dim I As Integer = 0
+  '  '================
+  '  For Each tmp As SIS.DB.SD_Information In Data
+  '    I += 1
+  '    tr = New TableRow
+
+  '    td = New TableCell
+  '    td.Text = I
+  '    tr.Cells.Add(td)
+
+
+  '    td = New TableCell
+  '    'Dim hl As New HyperLink
+  '    'With hl
+  '    '  .Text = tmp.t_docn
+  '    '  .NavigateUrl =
+  '    'End With
+  '    With td
+  '      .Font.Bold = True
+  '    End With
+  '    td.Text = tmp.t_item
+  '    tr.Cells.Add(td)
+
+  '    td = New TableCell
+  '    td.Text = tmp.t_docn
+  '    tr.Cells.Add(td)
+
+  '    td = New TableCell
+  '    td.Text = tmp.t_revn
+  '    tr.Cells.Add(td)
+
+  '    td = New TableCell
+
+  '    td.Text = tmp.t_dsca
+  '    tr.Cells.Add(td)
+
+  '    td = New TableCell
+  '    td.Text = tmp.t_pdfn
+  '    tr.Cells.Add(td)
+
+  '    td = New TableCell
+  '    td.Text = tmp.t_dttl
+  '    tr.Cells.Add(td)
+
+  '    td = New TableCell
+  '    td.Text = tmp.t_cspa
+  '    With td
+  '      .Font.Bold = True
+  '    End With
+  '    tr.Cells.Add(td)
+
+  '    td = New TableCell
+  '    td.Text = tmp.t_wght
+  '    tr.Cells.Add(td)
+
+  '    td = New TableCell
+  '    td.Text = tmp.t_drwn
+  '    tr.Cells.Add(td)
+
+  '    td = New TableCell
+  '    td.Text = tmp.t_chck
+  '    tr.Cells.Add(td)
+
+  '    td = New TableCell
+  '    td.Text = tmp.t_aprb
+
+  '    tr.Cells.Add(td)
+
+
+
+
+  '    tbl.Rows.Add(tr)
+
+
+  '  Next
+  '  '================
+  '  sdDetails.Controls.Add(tbl)
+
+  'End Sub
 
   Private Sub ShowPreData(ByVal DocumentID As String, ByVal RevisionNo As String)
         Dim Data As List(Of SIS.DB.PRE_Information) = SIS.DB.PRE_Information.GetPREDATA(DocumentID, RevisionNo)
@@ -3891,6 +3897,278 @@ Partial Class GF_DocumentDB
 
     End Sub
 
+    <System.Web.Services.WebMethod()>
+    <System.Web.Script.Services.ScriptMethod()>
+    Private Sub ShowV2BData(ByVal DocumentID As String, ByVal RevisionNo As String)
+        Dim Data As List(Of SIS.DB.V2B_Information) = SIS.DB.V2B_Information.GetV2BDATA(DocumentID, RevisionNo)
+
+        DocumentID = F_t_docn.Text.ToUpper()
+        F_t_docn.Text = DocumentID
+        RevisionNo = F_t_revn.Text
+
+
+        If DocumentID = "" Then Exit Sub
+        If Data.Count = 0 Then Exit Sub
+        Dim tbl As New Table
+        With tbl
+            .GridLines = GridLines.Both
+            .BorderWidth = 2
+            .CellSpacing = 2
+            .Width = Unit.Percentage(100)
+            .CssClass = "table-light"
+            '  .CssClass = "table-danger table-bordered thead-primary table-hover"
+        End With
+        Dim tr As TableRow = Nothing
+        Dim td As TableCell = Nothing
+
+
+
+        'Header
+        tr = New TableRow
+
+        td = New TableCell
+        td.Text = "S.NO"
+        With td
+            .Font.Bold = True
+            .Font.Size = FontUnit.Point(10)
+        End With
+        tr.Cells.Add(td)
+
+
+
+        td = New TableCell
+        With td
+            .Font.Bold = True
+            .Font.Size = FontUnit.Point(10)
+        End With
+        td.Text = "SRNO"
+        tr.Cells.Add(td)
+
+        td = New TableCell
+        With td
+            .Font.Bold = True
+            .Font.Size = FontUnit.Point(10)
+        End With
+        td.Text = "PROCESS NAME"
+        tr.Cells.Add(td)
+
+        td = New TableCell
+        With td
+            .Font.Bold = True
+            .Font.Size = FontUnit.Point(10)
+        End With
+        td.Text = "LOG DETAILS"
+        tr.Cells.Add(td)
+
+
+        td = New TableCell
+        With td
+            .Font.Bold = True
+            .Font.Size = FontUnit.Point(10)
+        End With
+        td.Text = "JOB CREATED BY"
+        tr.Cells.Add(td)
+
+        td = New TableCell
+        With td
+            .Font.Bold = True
+            .Font.Size = FontUnit.Point(10)
+        End With
+        td.Text = "HOSTNAME"
+        tr.Cells.Add(td)
+
+        td = New TableCell
+        With td
+            .Font.Bold = True
+            .Font.Size = FontUnit.Point(10)
+        End With
+        td.Text = "CREATED ON"
+        tr.Cells.Add(td)
+
+        'td = New TableCell
+        'With td
+        '    .Font.Bold = True
+        '    .Font.Size = FontUnit.Point(10)
+        'End With
+        'td.Text = "STEP DESCRIPTION"
+        'tr.Cells.Add(td)
+
+
+
+
+
+        tbl.Rows.Add(tr)
+
+        Dim I As Integer = 0
+        '================
+        For Each tmp As SIS.DB.V2B_Information In Data
+            I += 1
+            tr = New TableRow
+
+            td = New TableCell
+            td.Text = I
+            tr.Cells.Add(td)
+
+
+            td = New TableCell
+            With td
+                .Font.Bold = True
+            End With
+            td.Text = tmp.Srno
+            tr.Cells.Add(td)
+
+            td = New TableCell
+            td.Text = tmp.Processname
+            If td.Text.IndexOf("BomXPort-F:\Temp\Test1") > -1 Then
+
+                td.Text = "BOM Export - Processor 1"
+                tr.BackColor = Drawing.Color.LightYellow
+                'With td
+                '    .Font.Bold = True
+                'End With
+
+
+            End If
+
+            If td.Text.IndexOf("BomXPort-F:\Temp\Test2") > -1 Then
+                td.Text = "BOM Export - Processor 2"
+                tr.BackColor = Drawing.Color.LightYellow
+                'With td
+                '    .Font.Bold = True
+                'End With
+
+
+            End If
+
+
+
+            If td.Text.IndexOf("VaultToBaaN") > -1 Then
+                td.Text = "VaultToBaaN - XML Validator"
+                tr.BackColor = Drawing.Color.Red
+                'With td
+                '    .Font.Bold = True
+                'End With
+
+
+            End If
+
+
+
+            tr.Cells.Add(td)
+
+
+
+
+            td = New TableCell
+            With td
+                .Font.Bold = True
+            End With
+
+            td.Text = tmp.StepError
+
+            If td.Text.IndexOf("Imported") > -1 Then
+
+                tr.BackColor = Drawing.Color.Green
+                With td
+                    .Font.Bold = True
+
+                End With
+
+
+            End If
+
+            If td.Text.IndexOf("Document Closed") > -1 Then
+
+                tr.BackColor = Drawing.Color.LightYellow
+                With td
+                    .Font.Bold = True
+
+                End With
+                td.Text = "Completed :- Document Closed."
+
+            End If
+
+
+
+            If td.Text.IndexOf("Error") > -1 Then
+                tr.BackColor = Drawing.Color.Red
+                With td
+                    .Font.Bold = True
+
+                End With
+
+
+            End If
+            If td.Text.IndexOf(".xml :") > -1 Then
+                tr.BackColor = Drawing.Color.Orange
+                With td
+                    .Font.Bold = True
+
+                End With
+                td.Text = "Reason:- " & tmp.StepError
+
+            End If
+
+
+
+            If td.Text.IndexOf("Processing") > -1 Then
+                tr.BackColor = Drawing.Color.LightYellow
+                With td
+                    .Font.Bold = True
+
+                End With
+                td.Text = "Started :- Processing For drawing file."
+
+
+            End If
+
+            If td.Text.IndexOf("Importing") > -1 Then
+                tr.BackColor = Drawing.Color.Yellow
+                With td
+                    .Font.Bold = True
+
+                End With
+
+
+            End If
+
+
+
+            tr.Cells.Add(td)
+
+            td = New TableCell
+            td.Text = tmp.Job_CreatedBy
+            tr.Cells.Add(td)
+
+            td = New TableCell
+            td.Text = tmp.Job_UserID
+            tr.Cells.Add(td)
+
+            td = New TableCell
+            With td
+                .Font.Bold = True
+            End With
+            td.Text = tmp.CreatedOn
+            tr.Cells.Add(td)
+
+            'td = New TableCell
+            'td.Text = tmp.StepDescription
+            'tr.Cells.Add(td)
+
+
+
+
+
+
+
+            tbl.Rows.Add(tr)
+
+
+        Next
+        '================
+        pnl_v2bdetails.Controls.Add(tbl)
+
+    End Sub
     Private Sub ShowSData(ByVal DocumentID As String, ByVal RevisionNo As String)
         Dim Data As List(Of SIS.DB.SAR_Information) = SIS.DB.SAR_Information.GetSARDATA(DocumentID, RevisionNo)
 
@@ -4087,47 +4365,47 @@ Partial Class GF_DocumentDB
 
     End Sub
 
-  Private Sub cmdSubmitV2B_Click(sender As Object, e As EventArgs) Handles cmdSubmitV2B.Click
-    sd.Visible = False
-    vi.Visible = True
-    poi.Visible = False
-    found.Visible = False
-    mi.Visible = False
-    pi.Visible = False
-    ii.Visible = False
-    ti.Visible = False
-    di.Visible = False
-    si.Visible = False
-    reci.Visible = False
-    repi.Visible = False
-    repd.Visible = False
-    bom.Visible = False
-    partbom.Visible = False
-    ref.Visible = False
-    dwg.Visible = False
-    v2bheading.Text = "Last 1000 Documents Transferred from Autodesk Vault to ERPLN"
-    ShowVRData()
-  End Sub
+  'Private Sub cmdSubmitV2B_Click(sender As Object, e As EventArgs) Handles cmdSubmitV2B.Click
+  '  ' sd.Visible = False
+  '  'vi.Visible = True
+  '  poi.Visible = False
+  '  found.Visible = False
+  '  mi.Visible = False
+  '  pi.Visible = False
+  '  ii.Visible = False
+  '  ti.Visible = False
+  '  di.Visible = False
+  '  si.Visible = False
+  '  reci.Visible = False
+  '  repi.Visible = False
+  '  repd.Visible = False
+  '  bom.Visible = False
+  '  partbom.Visible = False
+  '  ref.Visible = False
+  '  dwg.Visible = False
+  '  'v2bheading.Text = "Last 1000 Documents Transferred from Autodesk Vault to ERPLN"
+  '  'ShowVRData()
+  'End Sub
 
-  Private Sub cmdsubmitsd_Click(sender As Object, e As EventArgs) Handles cmdsubmitsd.Click
-    sd.Visible = True
-    vi.Visible = False
-    poi.Visible = False
-    found.Visible = False
-    mi.Visible = False
-    pi.Visible = False
-    ii.Visible = False
-    ti.Visible = False
-    di.Visible = False
-    si.Visible = False
-    reci.Visible = False
-    repi.Visible = False
-    repd.Visible = False
-    bom.Visible = False
-    partbom.Visible = False
-    ref.Visible = False
-    dwg.Visible = False
-    sdheading.Text = "Standard Document Master"
-    ShowsdData()
-  End Sub
+  'Private Sub cmdsubmitsd_Click(sender As Object, e As EventArgs) Handles cmdsubmitsd.Click
+  '  'sd.Visible = True
+  '  'vi.Visible = False
+  '  poi.Visible = False
+  '  found.Visible = False
+  '  mi.Visible = False
+  '  pi.Visible = False
+  '  ii.Visible = False
+  '  ti.Visible = False
+  '  di.Visible = False
+  '  si.Visible = False
+  '  reci.Visible = False
+  '  repi.Visible = False
+  '  repd.Visible = False
+  '  bom.Visible = False
+  '  partbom.Visible = False
+  '  ref.Visible = False
+  '  dwg.Visible = False
+  '  sdheading.Text = "Standard Document Master"
+  '  ShowsdData()
+  'End Sub
 End Class

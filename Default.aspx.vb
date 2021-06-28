@@ -12,11 +12,11 @@ Partial Class LGDefault
       With aList
         .Add("http://192.9.200.146/HoldList/Default.aspx, HLL.jpg")
         .Add("http://192.9.200.172:8080/joomlakm/index.php?option=com_users&view=login, EPM.jpg")
-        .Add("http://192.9.200.161/Citrix/XenApp1/clientDetection/downloadNative.aspx, CITRIX.jpg")
-        .Add("http://192.9.200.146/Webmapp1/DM_mMain/App_Forms/mGdmisg121.aspx, RDL.jpg")
-        .Add("http://192.9.200.146/Webmapp1/DM_mMain/App_Forms/mGdmisg121_all.aspx, ADL.jpg")
-        .Add("http://192.9.200.233:8069/web/login, PAT.jpg")
-        .Add("http://192.168.25.44:8080/OpenKM/login.jsp, OKM.jpg")
+        '.Add("http://192.9.200.161/Citrix/XenApp1/clientDetection/downloadNative.aspx, CITRIX.jpg")
+        '.Add("http://192.9.200.146/Webmapp1/DM_mMain/App_Forms/mGdmisg121.aspx, RDL.jpg")
+        '.Add("http://192.9.200.146/Webmapp1/DM_mMain/App_Forms/mGdmisg121_all.aspx, ADL.jpg")
+        '.Add("http://192.9.200.233:8069/web/login, PAT.jpg")
+        '.Add("http://192.168.25.44:8080/OpenKM/login.jsp, OKM.jpg")
         .Add("http://192.9.200.146/WebERP1/Default.aspx, ER.jpg")
       End With
       For Each itm As String In aList

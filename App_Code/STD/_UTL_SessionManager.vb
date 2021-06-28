@@ -106,6 +106,8 @@ Namespace SIS.SYS.Utilities
             Cmd.CommandText = "select max(vcount) from db_counter"
 
 
+
+
             .Session("Visitors") = Cmd.ExecuteScalar
 
           End Using

@@ -143,7 +143,7 @@ function checkTime(i) {
 
             <tr>
               <td>
-                <span style="color: #99ccff; font-size:14px; line-height:35px; font-family: Corbel;">Version : </span> <span style="color: #99ffcc; font-size:14px; line-height:35px; font-family: Corbel;"> DB 1.4</span>
+                <span style="color: #99ccff; font-size:14px; line-height:35px; font-family: Corbel;">Version : </span> <span style="color: #99ffcc; font-size:14px; line-height:35px; font-family: Corbel;"> DB 1.5</span>
                 <a href="#vinformation" class="btn btn-light btn-outline-light" style="width: 28px;height: 28px; text-align: center; text-justify:auto; cursor: pointer" data-toggle="collapse"><b>i</b></a>
   
                 <a href="#UserGuide" class="btn btn-light btn-outline-primary" style="width: 190px;height: 28px; text-align: center; text-rendering:auto;  text-justify:auto; cursor: pointer" data-toggle="collapse"><b>User Manual</b></a>
@@ -183,13 +183,25 @@ function checkTime(i) {
         <p> <span style="color:mediumspringgreen; font-family: Corbel">4. Show PRE-ORDER  and POST ORDER details in table  </span> </p>
         <p> <span style="color:mediumspringgreen; font-family: Corbel">5. Real time Vault status update added for LOCK/UNLOCK of file  </span> </p>
          <hr/>
-        <p><span style="color: #99ccff">DB1.4 -Update 5 : </span><span style="color: #99ffcc">01/07/2020 </span></p>
-        <p><b><span style="color:mediumspringgreen">Document DashBoard Upgraded  </span></b></p>
+        <p><span style="color: #99ccff">DB1.4 -Update 5 : </span><span style="color: #99ffcc">19/11/2020 </span></p>
+        <p><b><span style="color:mediumspringgreen"> DashBoard Upgrades are as below  </span></b></p>
       <p> <span style="color:mediumspringgreen; font-family: Corbel">1. Part Item details added </span></p>
       <p> <span style="color:mediumspringgreen; font-family: Corbel">2. Live Trasfer view from Autodesk Vault to ERPLN Added </span></p>
       <p> <span style="color:mediumspringgreen; font-family: Corbel">3. Standard Document List added </span></p>
       <p> <span style="color:mediumspringgreen; font-family: Corbel">4. DCR details added </span></p>
-              
+      <p> <span style="color:mediumspringgreen; font-family: Corbel">5. Live Support Case - New DashBoard Added in Menu</span></p>
+      <p> <span style="color:mediumspringgreen; font-family: Corbel">6. Pending for issue, documents - updated at Discipline DashBoard </span></p>
+      <p> <span style="color:mediumspringgreen; font-family: Corbel">7. Pending for issue, documents - updated at Project DashBoard </span></p>
+      <p> <span style="color:mediumspringgreen; font-family: Corbel">8. Vendor ID and Name  added for IDMS Reciept on Project DashBoard</span></p>
+      <p> <span style="color:mediumspringgreen; font-family: Corbel">9. Direct link for PDF portals removed- as security reasons</span></p>
+
+
+   <hr/>
+
+         <p><span style="color: #99ccff">DB1.5 -Update 6 : </span><span style="color: #99ffcc">01/04/2021 </span></p>
+        <p><b><span style="color:mediumspringgreen"> DashBoard Upgrades are as below  </span></b></p>
+      <p> <span style="color:mediumspringgreen; font-family: Corbel">1. Vault To Baan Transfer Logs </span></p>
+     
 
 
    <hr/>

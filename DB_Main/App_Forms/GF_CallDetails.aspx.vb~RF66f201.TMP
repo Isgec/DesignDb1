@@ -1,0 +1,205 @@
+Partial Class GF_CallDetails
+  Inherits System.Web.UI.Page
+
+  Private Sub ShowCallData(ByVal x As String, ByVal y As String)
+    Dim Data As List(Of SIS.DB.Calldetail) = SIS.DB.Calldetail.GetData(x, y)
+
+    Dim tbl As New Table
+    With tbl
+      .GridLines = GridLines.Both
+      .BorderWidth = 2
+      .CellSpacing = 2
+      .Width = Unit.Percentage(100)
+      .CssClass = "table-light table-bordered"
+      '  .CssClass = "table-danger table-bordered thead-primary table-hover"
+    End With
+    Dim tr As TableRow = Nothing
+    Dim td As TableCell = Nothing
+
+    'Header
+    tr = New TableRow
+
+    td = New TableCell
+    td.Text = "S.NO."
+    With td
+      .Font.Bold = True
+      .Font.Size = FontUnit.Point(10)
+    End With
+    tr.Cells.Add(td)
+
+    td = New TableCell
+    With td
+      .Font.Bold = True
+      .Font.Size = FontUnit.Point(10)
+    End With
+    td.Text = "CASE ID"
+    tr.Cells.Add(td)
+
+    td = New TableCell
+    With td
+      .Font.Bold = True
+      .Font.Size = FontUnit.Point(10)
+    End With
+    td.Text = "CASE TYPE"
+    tr.Cells.Add(td)
+
+    td = New TableCell
+    With td
+      .Font.Bold = True
+      .Font.Size = FontUnit.Point(10)
+    End With
+    td.Text = "CASE DESCRIPTION"
+    tr.Cells.Add(td)
+
+    td = New TableCell
+    With td
+      .Font.Bold = True
+      .Font.Size = FontUnit.Point(10)
+    End With
+    td.Text = "EMPLOYEE ID "
+    tr.Cells.Add(td)
+
+    td = New TableCell
+    With td
+      .Font.Bold = True
+      .Font.Size = FontUnit.Point(10)
+    End With
+    td.Text = "EMPLOYEE NAME"
+    tr.Cells.Add(td)
+
+    td = New TableCell
+    With td
+      .Font.Bold = True
+      .Font.Size = FontUnit.Point(10)
+
+    End With
+    td.Text = "LOGGED ON"
+    tr.Cells.Add(td)
+
+    td = New TableCell
+    With td
+      .Font.Bold = True
+      .Font.Size = FontUnit.Point(10)
+    End With
+    td.Text = "STATUS"
+    tr.Cells.Add(td)
+
+
+    td = New TableCell
+    With td
+      .Font.Bold = True
+      .Font.Size = FontUnit.Point(10)
+
+    End With
+    td.Text = "PRIORITY"
+    tr.Cells.Add(td)
+
+
+    'td = New TableCell
+    'With td
+    '  .Font.Bold = True
+    '  .Font.Size = FontUnit.Point(14)
+    'End With
+    'td.Text = "Option"
+    'tr.Cells.Add(td)
+
+    tbl.Rows.Add(tr)
+
+    Dim I As Integer = 0
+    '================
+    For Each tmp As SIS.DB.Calldetail In Data
+      I += 1
+      tr = New TableRow
+
+      td = New TableCell
+      td.Text = I
+      tr.Cells.Add(td)
+
+      td = New TableCell
+      td.Text = tmp.CallID
+      tr.Cells.Add(td)
+
+      td = New TableCell
+      td.Text = tmp.UserID
+      tr.Cells.Add(td)
+
+
+      td = New TableCell
+      td.Text = tmp.Caseloggedby
+      tr.Cells.Add(td)
+
+      td = New TableCell
+      td.Text = tmp.CaseApplication
+      tr.Cells.Add(td)
+
+      td = New TableCell
+      td.Text = tmp.CallDescription
+      tr.Cells.Add(td)
+
+
+
+      td = New TableCell
+
+      td.Text = tmp.LoggedOn
+      tr.Cells.Add(td)
+
+
+
+      td = New TableCell
+      td.Text = tmp.CasePriority
+      tr.Cells.Add(td)
+
+
+      td = New TableCell
+      td.Text = tmp.CaseAttendedBy
+      tr.Cells.Add(td)
+
+      td = New TableCell
+      td.Text = tmp.AttendedOn
+      tr.Cells.Add(td)
+
+      td = New TableCell
+      td.Text = tmp.SolutionProvided
+      tr.Cells.Add(td)
+
+      td = New TableCell
+      td.Text = tmp.CaseStatus
+      tr.Cells.Add(td)
+
+
+      td = New TableCell
+      td.Text = tmp.ClosedOn
+      tr.Cells.Add(td)
+
+      td = New TableCell
+      td.Text = tmp.SignedOffOn
+      tr.Cells.Add(td)
+      'td = New TableCell
+      'Dim cmd As New Button
+      'cmd.Text = "Click Me"
+      'td.Controls.Add(cmd)
+      'tr.Cells.Add(td)
+
+
+      tbl.Rows.Add(tr)
+
+
+    Next
+    '================
+    pnlDetails.Controls.Add(tbl)
+
+  End Sub
+
+
+  Private Sub GF_UserDBDetails_Load(sender As Object, e As EventArgs) Handles Me.Load
+    Dim Det As String = Request.QueryString("detail")
+    Dim empID As String = Request.QueryString("empid")
+    If (Det = "cpd") Then
+      PSheading.Text = "PENDING DWGS/DOCS IN RELEASE WORKFLOW :-DRAFTING"
+      ShowCallData(Det, empID)
+    End If
+    PSheading.Text = "ENGINEERING TECHNICAL SUPPORT CASES DETAILS"
+    ShowCallData(Det, empID)
+    were.Visible = True
+  End Sub
+End Class

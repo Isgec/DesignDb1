@@ -18,7 +18,7 @@
           </asp:UpdateProgress>
          
            <%-- <script src="Script1.js"></script>--%>
-           <div class="container-fluid">
+         <div class="container-fluid">
       <div id="carouselExampleIndicators1" class="carousel slide" data-ride="carousel">
   <ol class="carousel-indicators">
     <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
@@ -164,7 +164,8 @@
     Click again 'Department' button To Hide this Information.
                   </div>
                   <asp:DropDownList ID="F_YearID" class="btn btn-light btn-outline-dark" ClientIDMode="static" runat="Server">
-                    <asp:ListItem Value="">2020</asp:ListItem>
+                    <asp:ListItem Value="">2021</asp:ListItem>
+                    <asp:ListItem>2020</asp:ListItem>
                     <asp:ListItem>2019</asp:ListItem>
                     <asp:ListItem>2018</asp:ListItem>
                     <asp:ListItem>2017</asp:ListItem>
@@ -174,7 +175,6 @@
                     <asp:ListItem>2013</asp:ListItem>
                     <asp:ListItem>2012</asp:ListItem>
                     <asp:ListItem>2011</asp:ListItem>
-                    <asp:ListItem>2010</asp:ListItem>
 
 
                   </asp:DropDownList>
@@ -259,7 +259,7 @@
       
            <%-- PMDL TABLE--%>
 
-
+        <div>
 
           <div class="container-fluid" id="DPMDLTABLE" runat="server" visible="false">
              
@@ -379,9 +379,94 @@
         </div>
               </div>
             </div>
-
           </div>
+         
+            <div class="container-fluid" id="prod1" runat="server" visible="false">
+             
+       <%--  <hr style="color: forestgreen; background-color: darkgreen; width: 100%; height: 1px">--%> 
+            <center> <h6><font face="comic Sans MS">Release vs Issue Comparision</font></h6></center>
 
+     <div class="border border-secondary btn-outline-light">
+            <div class="container-fluid" id="prod2" runat="server" visible="true">
+              
+             
+                <div class=" text-center">
+
+                  <div class="row">
+                    <div class="col-3">
+                      <div class="text-secondary">
+                        <h6><b></b></h6>
+                      </div>
+                    </div>
+
+                    <div class="col-9">
+                      <div class="row">
+
+                         <div class="col">
+                          <div class="text-dark">
+                           <font face="Comic Sans MS"><b>Document Released but not issued in Current Month </b></font>
+                          </div>
+                        </div>
+
+                        <div class="col">
+                          <div class="text-warning">
+                           <font face="Comic Sans MS"><b>Document Released but not issued in last 30 Days </b></font>
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div class="text-danger">
+                             <font face="Comic Sans MS"><b>Document Released but not issued in last 60 Days </b></font>
+                          </div>
+                        </div>
+
+                           <div class="col">
+                          <div class="text-danger">
+                             <font face="Comic Sans MS"><b>Document Released but not issued in last 100 Days </b></font>
+                          </div>
+                        </div>
+                        
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+
+                <div class="mb-1">
+                  <div class="row">
+                    <div class="col-3">
+                      <asp:Button ID="BtnDisciplineprod" runat="server" CssClass="btn btn-dark btn-sm btn-block text-center font-weight-bold" ToolTip="" Text="" Font-Bold="true"></asp:Button>
+                    </div>
+                    <div class="col-9">
+                      <div class="row">
+
+                        <div class="col">
+                          <asp:Button ID="btn_Dueforissue_CurrentM_A" runat="server" CssClass="btn-sm btn-block font-weight-bold" ToolTip="Document Released but not issued in Current Month" Text="" Font-Bold="true"></asp:Button>
+                        </div>
+
+                        <div class="col">
+                          <asp:Button ID="btn_Dueforissue_previousM_B" runat="server" CssClass="btn-outline-warning btn-sm btn-block font-weight-bold" ToolTip="Document Released but not issued in last 30 Days" Text="" Font-Bold="true"></asp:Button>
+                        </div>
+
+                        <div class="col">
+                          <asp:Button ID="btn_Dueforissue_Total_C" runat="server" CssClass="btn-outline-danger btn-sm btn-block font-weight-bold" ToolTip="Document Released but not issued in last 60 Days" Text="" Font-Bold="true"></asp:Button>
+                        </div>
+                        
+                          <div class="col">
+                          <asp:Button ID="btn_Dueforissue_Total_D" runat="server" CssClass="btn-outline-danger btn-sm btn-block font-weight-bold" ToolTip="Document Released but not issued in last 100 Days" Text="" Font-Bold="true"></asp:Button>
+                        </div>
+
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+        </div>
+              </div>
+            </div>
+
+         
+        
           
         <%--  <hr>--%>
           <%-- SAR TABLE--%>

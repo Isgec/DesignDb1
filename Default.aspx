@@ -2,6 +2,18 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="cph1" Runat="Server">
 
                 <div id="abc" runat="server">
+                    <hr />
+                  <br />
+                   <br />
+                   <br />
+                   <br />
+                
+                  <div>
+                   
+                    <p><b><span style="color:blueviolet">Other Useful Design Web Sites </span></b></p>
+                    
+                  </div>
+               
 <%--                 <hr />
              <div>
                <p>
@@ -46,7 +58,7 @@
                 <hr/>--%>
             </div>
           
-             
+            
 
 
   

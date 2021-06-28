@@ -184,6 +184,351 @@ Partial Class GF_DisciplineDBDetails
 
   End Sub
 
+  'Private Sub ShowDPLMData(ByVal det As String, ByVal DivisionID As String, ByVal DisciplineID As String, ByVal YearID As String, ByVal MonthID As String)
+  '  Dim Data As List(Of SIS.DD.DisciplineDetail) = SIS.DD.DisciplineDetail.GetDPLMData(det, DivisionID, DisciplineID, YearID, MonthID)
+  '  Dim tbl As New Table
+
+
+  '  With tbl
+
+  '    .GridLines = GridLines.Both
+  '    .BorderWidth = 2
+  '    .CellSpacing = 2
+  '    .Width = Unit.Percentage(100)
+  '    .CssClass = "table-light table-bordered"
+
+
+  '  End With
+
+  '  Dim tr As TableRow = Nothing
+  '  Dim td As TableCell = Nothing
+
+
+
+  '  'Header
+  '  tr = New TableRow
+
+  '  td = New TableCell
+  '  td.Text = "S.NO."
+  '  With td
+  '    .Font.Bold = True
+  '    .Font.Size = FontUnit.Point(8)
+  '  End With
+  '  tr.Cells.Add(td)
+
+  '  td = New TableCell
+  '  td.Text = "TYPE"
+  '  With td
+  '    .Font.Bold = True
+  '    .Font.Size = FontUnit.Point(8)
+  '  End With
+  '  tr.Cells.Add(td)
+
+  '  td = New TableCell
+  '  td.Text = "PROJECT"
+  '  With td
+  '    .Font.Bold = True
+  '    .Font.Size = FontUnit.Point(8)
+  '  End With
+  '  tr.Cells.Add(td)
+
+
+  '  td = New TableCell
+  '  With td
+  '    .Font.Bold = True
+  '    .Font.Size = FontUnit.Point(8)
+  '  End With
+  '  td.Text = "PROJECT NAME"
+  '  tr.Cells.Add(td)
+
+
+
+  '  td = New TableCell
+  '  With td
+  '    .Font.Bold = True
+  '    .Font.Size = FontUnit.Point(8)
+  '  End With
+  '  td.Text = "DOCUMENT NUMBER"
+  '  tr.Cells.Add(td)
+
+
+  '  td = New TableCell
+  '  With td
+  '    .Font.Bold = True
+  '    .Font.Size = FontUnit.Point(8)
+  '  End With
+  '  td.Text = "REV."
+  '  tr.Cells.Add(td)
+
+
+  '  td = New TableCell
+  '  With td
+  '    .Font.Bold = True
+  '    .Font.Size = FontUnit.Point(8)
+  '  End With
+  '  td.Text = "TITTLE"
+  '  tr.Cells.Add(td)
+
+  '  td = New TableCell
+  '  With td
+  '    .Font.Bold = True
+  '    .Font.Size = FontUnit.Point(8)
+  '  End With
+  '  td.Text = "BASELINE"
+  '  tr.Cells.Add(td)
+
+
+
+  '  td = New TableCell
+  '  With td
+  '    .Font.Bold = True
+  '    .Font.Size = FontUnit.Point(8)
+  '  End With
+  '  td.Text = "ACTUAL RELEASE"
+  '  tr.Cells.Add(td)
+
+
+
+
+  '  tbl.Rows.Add(tr)
+
+  '  Dim I As Integer = 0
+  '  '================
+  '  For Each tmp As SIS.DD.DisciplineDetail In Data
+  '    I += 1
+  '    tr = New TableRow
+
+  '    td = New TableCell
+  '    td.Text = I
+  '    tr.Cells.Add(td)
+
+  '    td = New TableCell
+  '    td.Text = tmp.t_pcod
+  '    tr.Cells.Add(td)
+
+  '    td = New TableCell
+  '    td.Text = tmp.t_cprj
+  '    tr.Cells.Add(td)
+
+  '    td = New TableCell
+  '    td.Text = tmp.Project_Name
+  '    tr.Cells.Add(td)
+
+
+  '    td = New TableCell
+  '    td.Text = tmp.t_docn
+  '    tr.Cells.Add(td)
+
+  '    td = New TableCell
+  '    td.Text = tmp.t_revn
+  '    tr.Cells.Add(td)
+
+
+  '    td = New TableCell
+  '    td.Text = tmp.t_dsca
+  '    tr.Cells.Add(td)
+
+  '    td = New TableCell
+  '    If (tmp.t_bsfd = "01/01/1970") Then tmp.t_bsfd = ""
+  '    td.Text = tmp.t_bsfd
+  '    tr.Cells.Add(td)
+
+
+
+
+  '    td = New TableCell
+  '    If (tmp.t_acdt = "01/01/1970") Then
+  '      tmp.t_acdt = ""
+  '      tr.BackColor = Drawing.Color.Yellow
+
+
+  '      'ElseIf (tmp.t_acdt <= tmp.t_bsfd) Then
+  '      '  tr.BackColor = Drawing.Color.GreenYellow
+
+  '      'ElseIf (tmp.t_acdt > tmp.t_bsfd) Then
+  '      '  tr.BackColor = Drawing.Color.Red
+  '    End If
+
+
+  '    ' Dim t As Date = DateAdd(DateInterval.Minute, 330, tmp.t_acdt)
+  '    td.Text = tmp.t_acdt
+
+  '    tr.Cells.Add(td)
+
+
+
+
+  '    tbl.Rows.Add(tr)
+
+
+  '  Next
+  '  '================
+  '  ppnlDetails.Controls.Add(tbl)
+
+  'End Sub
+  Private Sub ShowDissueData(ByVal det As String, ByVal DivisionID As String, ByVal DisciplineID As String, ByVal YearID As String, ByVal MonthID As String)
+    Dim Data As List(Of SIS.DD.DisciplineDetail) = SIS.DD.DisciplineDetail.GetDissueData(det, DivisionID, DisciplineID, YearID, MonthID)
+    Dim tbl As New Table
+
+
+    With tbl
+
+      .GridLines = GridLines.Both
+      .BorderWidth = 2
+      .CellSpacing = 2
+      .Width = Unit.Percentage(100)
+      .CssClass = "table-light table-bordered"
+
+
+    End With
+
+    Dim tr As TableRow = Nothing
+    Dim td As TableCell = Nothing
+
+
+
+    'Header
+    tr = New TableRow
+
+    td = New TableCell
+    td.Text = "S.NO."
+    With td
+      .Font.Bold = True
+      .Font.Size = FontUnit.Point(8)
+    End With
+    tr.Cells.Add(td)
+
+    td = New TableCell
+    td.Text = "TYPE"
+    With td
+      .Font.Bold = True
+      .Font.Size = FontUnit.Point(8)
+    End With
+    tr.Cells.Add(td)
+
+    td = New TableCell
+    td.Text = "PROJECT"
+    With td
+      .Font.Bold = True
+      .Font.Size = FontUnit.Point(8)
+    End With
+    tr.Cells.Add(td)
+
+
+    td = New TableCell
+    With td
+      .Font.Bold = True
+      .Font.Size = FontUnit.Point(8)
+    End With
+    td.Text = "PROJECT NAME"
+    tr.Cells.Add(td)
+
+
+
+    td = New TableCell
+    With td
+      .Font.Bold = True
+      .Font.Size = FontUnit.Point(8)
+    End With
+    td.Text = "DOCUMENT NUMBER"
+    tr.Cells.Add(td)
+
+
+    td = New TableCell
+    With td
+      .Font.Bold = True
+      .Font.Size = FontUnit.Point(8)
+    End With
+    td.Text = "REV."
+    tr.Cells.Add(td)
+
+
+    td = New TableCell
+    With td
+      .Font.Bold = True
+      .Font.Size = FontUnit.Point(8)
+    End With
+    td.Text = "TITTLE"
+    tr.Cells.Add(td)
+
+
+
+
+
+    td = New TableCell
+    With td
+      .Font.Bold = True
+      .Font.Size = FontUnit.Point(8)
+    End With
+    td.Text = "ACTUAL RELEASE"
+    tr.Cells.Add(td)
+
+
+
+
+    tbl.Rows.Add(tr)
+
+    Dim I As Integer = 0
+    '================
+    For Each tmp As SIS.DD.DisciplineDetail In Data
+      I += 1
+      tr = New TableRow
+
+      td = New TableCell
+      td.Text = I
+      tr.Cells.Add(td)
+
+
+
+
+      td = New TableCell
+      td.Text = tmp.t_pcod
+      tr.Cells.Add(td)
+
+      td = New TableCell
+      td.Text = tmp.t_cprj
+      tr.Cells.Add(td)
+
+      td = New TableCell
+      td.Text = tmp.Project_Name
+      tr.Cells.Add(td)
+
+
+      td = New TableCell
+      td.Text = tmp.t_docn
+      tr.Cells.Add(td)
+
+      td = New TableCell
+      td.Text = tmp.t_revn
+      tr.Cells.Add(td)
+
+
+      td = New TableCell
+      td.Text = tmp.t_dsca
+      tr.Cells.Add(td)
+
+      td = New TableCell
+
+      td.Text = tmp.t_acdt
+      tr.Cells.Add(td)
+
+
+
+
+
+
+
+
+
+      tbl.Rows.Add(tr)
+
+
+    Next
+    '================
+    ppnlDetails.Controls.Add(tbl)
+
+  End Sub
+
   Private Sub ShowDSARData(ByVal det As String, ByVal DivisionID As String, ByVal DisciplineID As String, ByVal YearID As String, ByVal MonthID As String)
     Dim Data As List(Of SIS.DD.DisciplineDetail) = SIS.DD.DisciplineDetail.GetDSARData(det, DivisionID, DisciplineID, YearID, MonthID)
     Dim tbl As New Table
@@ -761,6 +1106,22 @@ Partial Class GF_DisciplineDBDetails
     td.Text = "ITEM DESCRIPTION"
     tr.Cells.Add(td)
 
+    td = New TableCell
+    With td
+      .Font.Bold = True
+      .Font.Size = FontUnit.Point(8)
+    End With
+    td.Text = "SUPPLIER ID"
+    tr.Cells.Add(td)
+
+    td = New TableCell
+    With td
+      .Font.Bold = True
+      .Font.Size = FontUnit.Point(8)
+    End With
+    td.Text = "SUPPLIER NAME"
+    tr.Cells.Add(td)
+
 
     td = New TableCell
     With td
@@ -928,7 +1289,15 @@ Partial Class GF_DisciplineDBDetails
         tr.Cells.Add(td)
 
 
-        td = New TableCell
+      td = New TableCell
+      td.Text = tmp.t_bpid
+      tr.Cells.Add(td)
+
+      td = New TableCell
+      td.Text = tmp.sname
+      tr.Cells.Add(td)
+
+      td = New TableCell
         td.Text = tmp.RStatus
         tr.Cells.Add(td)
 
@@ -1125,6 +1494,22 @@ Partial Class GF_DisciplineDBDetails
     td.Text = "ITEM DESCRIPTION"
     tr.Cells.Add(td)
 
+    td = New TableCell
+    With td
+      .Font.Bold = True
+      .Font.Size = FontUnit.Point(8)
+    End With
+    td.Text = "SUPPLIER ID"
+    tr.Cells.Add(td)
+
+    td = New TableCell
+    With td
+      .Font.Bold = True
+      .Font.Size = FontUnit.Point(8)
+    End With
+    td.Text = "SUPPLIER NAME"
+    tr.Cells.Add(td)
+
 
     td = New TableCell
     With td
@@ -1287,6 +1672,17 @@ Partial Class GF_DisciplineDBDetails
 
 
       td = New TableCell
+      td.Text = tmp.t_bpid
+      tr.Cells.Add(td)
+
+      td = New TableCell
+      td.Text = tmp.sname
+      tr.Cells.Add(td)
+
+
+
+
+      td = New TableCell
       td.Text = tmp.RStatus
       tr.Cells.Add(td)
 
@@ -1392,10 +1788,7 @@ Partial Class GF_DisciplineDBDetails
   End Sub
 
 
-
-
-
-  Private Sub GF_DisciplineDBDetails_Load(sender As Object, e As EventArgs) Handles Me.Load
+    Private Sub GF_DisciplineDBDetails_Load(sender As Object, e As EventArgs) Handles Me.Load
     Dim Det As String = Request.QueryString("detail")
     Dim DivisionID As String = Request.QueryString("DivisionID")
     Dim DisciplineID As String = Request.QueryString("DisciplineID")
@@ -1490,8 +1883,31 @@ Partial Class GF_DisciplineDBDetails
       PPSheading.Text = "Total drawings and documents backlog released in " & CMonthName & "/" & YearID & " for " & DivisionID & " / " & DisciplineID
       ShowDPLMData(Det, DivisionID, DisciplineID, YearID, MonthID)
     End If
+    If (Det = "Dueforissue_CurrentM_A") Then
+      PPSheading.Text = "Total drawings and documents Released but not issued in Current Month i.e. " & CMonthName & "/" & YearID & " for " & DivisionID & " / " & DisciplineID
+      ShowDissueData(Det, DivisionID, DisciplineID, YearID, MonthID)
 
-    If (Det = "SAR_TotalCount") Then
+    End If
+    If (Det = "Dueforissue_previousM_B") Then
+      PPSheading.Text = "Total drawings and documents Released but not issued in last 30 Days from Today for " & DivisionID & " / " & DisciplineID
+      ShowDissueData(Det, DivisionID, DisciplineID, YearID, MonthID)
+
+    End If
+        If (Det = "Dueforissue_Total_C") Then
+            PPSheading.Text = "Total drawings and documents Released but not issued in last 60 Days from Today for " & DivisionID & " / " & DisciplineID
+            ShowDissueData(Det, DivisionID, DisciplineID, YearID, MonthID)
+
+        End If
+
+        If (Det = "Dueforissue_Total_D") Then
+            PPSheading.Text = "Total drawings and documents Released but not issued in last 100 Days from Today for " & DivisionID & " / " & DisciplineID
+            ShowDissueData(Det, DivisionID, DisciplineID, YearID, MonthID)
+
+        End If
+
+
+
+        If (Det = "SAR_TotalCount") Then
       PPSheading.Text = "Total SAR Count in " & CMonthName & "/" & YearID & " for " & DivisionID & " / " & DisciplineID
       ShowDSARData(Det, DivisionID, DisciplineID, YearID, MonthID)
     End If

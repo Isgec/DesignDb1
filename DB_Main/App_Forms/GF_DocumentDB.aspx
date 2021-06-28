@@ -60,7 +60,7 @@
 
 
  </div>
-         <div class="col-2">
+       <%--  <div class="col-2">
            <asp:Button ID="cmdSubmitV2B" runat="server" CssClass="btn btn-success ml-1" Text="Live - Vault To Baan Transfer" ToolTip="Click to See Recent 1000 Documents " Font-Bold="true" Font-Names="Comic Sans MS" />
 
 
@@ -69,7 +69,7 @@
            <asp:Button ID="cmdsubmitsd" runat="server" CssClass="btn btn-info ml-1" Text="Standard Document Master" ToolTip="Click to all Standard Document Master " Font-Bold="true" Font-Names="Comic Sans MS" />
 
 
- </div>
+ </div>--%>
            </div>
            </ContentTemplate>
           <Triggers>
@@ -77,7 +77,20 @@
           </Triggers>
           </asp:UpdatePanel>
 
-
+         <asp:Label ID="V2BUserID" Text="" runat="server" ToolTip="User ID" Visible="true"></asp:Label>
+      
+      <div id="V2B" runat="server" visible="false">
+        <a href="#V2Binformation" text-align: center; cursor: pointer" data-toggle="collapse">Vault To Baan Transfer Logs</a>
+                <div id="V2Binformation" class="collapse">
+                           
+                        <div class="col-sm-auto my-0 table-hover">
+                            <div id="pnl_v2bdetails" runat="server" visible="true">
+                            </div>
+                        </div>
+                    
+                </div>
+        </div>
+      
 
               <div id="pi" runat="server" visible="false">
         <a href="#PMDLinformation" text-align: center; cursor: pointer" data-toggle="collapse">PMDL -Informations</a>
@@ -90,6 +103,10 @@
                     
                 </div>
         </div>
+
+
+
+
                  <div id="mi" runat="server" visible="false">
         <a href="#MANHOURinformation" text-align: center; cursor: pointer" data-toggle="collapse">MANHOUR -Informations</a>
                 <div id="MANHOURinformation" class="collapse">
@@ -182,11 +199,12 @@ Mentioned Document/Revision not found in ERPLN. Please check carefully
   </a>
 </div>   
 
-      
-      
-      
-      
       </div>
+
+     <%-- <asp:Label ID="V2BUserID" Text="" runat="server" ToolTip="User ID" Visible="true"></asp:Label>--%>
+
+
+
    <div id="found" runat ="server" visible="false" text="">
       <div class="row">
           <div class="col-1" id="DivProjectID" runat="server" visible="false">
@@ -802,9 +820,13 @@ Mentioned Document/Revision not found in ERPLN. Please check carefully
     </div>
      <hr/>
 </div>--%>
-     <div id="vi" runat="server" visible="false">
+    <%-- <div id="vi" runat="server" visible="false">
        
  
+       <div class="col-12 text-center">
+  <img src="vault2baan.gif" width="320" height="180""/>
+         </div>
+  
 
 
         <div class="col-12 text-center">
@@ -823,8 +845,12 @@ Mentioned Document/Revision not found in ERPLN. Please check carefully
         </div>
      
 
-      </div></div>
-        <div id="sd" runat="server" visible="false">
+      </div></div>--%>
+
+
+
+
+    <%--    <div id="sd" runat="server" visible="false">
         <div class="col-12 text-center">
           <div class="btn btn-warning btn-outline-dark" role="alert" id="sdm">
             <b>
@@ -841,7 +867,7 @@ Mentioned Document/Revision not found in ERPLN. Please check carefully
         </div>
      
 
-      </div></div>
+      </div></div>--%>
         <hr style="color:brown;background-color:darkslategrey;width:100%;height:3px">
 
 
@@ -851,4 +877,9 @@ Mentioned Document/Revision not found in ERPLN. Please check carefully
     </asp:UpdatePanel>
 </div>
 </div>
+    <%--<script>
+        function aaa() {
+           
+        }
+    </script>--%>
 </asp:Content>

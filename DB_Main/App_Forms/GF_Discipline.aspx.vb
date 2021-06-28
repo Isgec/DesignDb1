@@ -110,6 +110,12 @@ Partial Class GF_Discipline
     Btn_Discipline.Text = DivisionID + "-" + DisciplineID + "-" + F_YearID.SelectedItem.Text + "-" + F_MonthID.SelectedItem.Text
     Btn_Discipline.Font.Name = "Comic Sans MS"
 
+    prod1.Visible = True
+    BtnDisciplineprod.Text = DivisionID + "-" + DisciplineID + "-" + F_YearID.SelectedItem.Text + "-" + F_MonthID.SelectedItem.Text
+
+    BtnDisciplineprod.Font.Name = "Comic Sans MS"
+
+
     DSARTABLE.Visible = True
     Btn_Discipline1.Text = DivisionID + "-" + DisciplineID + "-" + F_YearID.SelectedItem.Text + "-" + F_MonthID.SelectedItem.Text
     Btn_Discipline1.Font.Name = "Comic Sans MS"
@@ -231,8 +237,19 @@ Partial Class GF_Discipline
     btn_All_IDMSPost_Superceded.Text = Dt4.All_IDMSPo_Superceded
     btn_All_IDMSPost_Closed.Text = Dt4.All_IDMSPo_Closed
 
+    Dim Dt5 As SIS.DD.DBDiscipline = SIS.DD.DBDiscipline.GetDissueDB(DivisionID, DisciplineID, MonthID, YearID)
+    btn_Dueforissue_CurrentM_A.Text = Dt5.Dueforissue_CurrentM_A
+    btn_Dueforissue_previousM_B.Text = Dt5.Dueforissue_previousM_B
+        btn_Dueforissue_Total_C.Text = Dt5.Dueforissue_Total_C
+        btn_Dueforissue_Total_D.Text = Dt5.Dueforissue_Total_D
+        btn_Dueforissue_Total_D.Font.Size = 12
 
-  End Sub
+        'DivEReviewedBy2.Visible = True
+        'btn_EReviewedBy.Font.Size = 10
+        'btn_EReviewedBy.Font.Bold = True
+        'btn_EReviewedBy.Font.Name = "Comic Sans MS"
+
+    End Sub
 
   'Protected Sub F_MonthID_SelectedIndexChanged(sender As Object, e As EventArgs) Handles F_MonthID.SelectedIndexChanged
   '  Dim an As Integer = 0
@@ -531,4 +548,20 @@ Partial Class GF_Discipline
 
   End Sub
 
+  Private Sub btn_Dueforissue_CurrentM_A_Click(sender As Object, e As EventArgs) Handles btn_Dueforissue_CurrentM_A.Click
+    Response.Redirect("GF_DisciplineDBDetails.aspx?detail=Dueforissue_CurrentM_A&DivisionID=" & DivisionID & "&DisciplineID=" & DisciplineID & "&YearID=" & YearID & "&MonthID=" & MonthID)
+  End Sub
+
+  Private Sub btn_Dueforissue_previousM_B_Click(sender As Object, e As EventArgs) Handles btn_Dueforissue_previousM_B.Click
+    Response.Redirect("GF_DisciplineDBDetails.aspx?detail=Dueforissue_previousM_B&DivisionID=" & DivisionID & "&DisciplineID=" & DisciplineID & "&YearID=" & YearID & "&MonthID=" & MonthID)
+  End Sub
+
+    Private Sub btn_Dueforissue_Total_C_Click(sender As Object, e As EventArgs) Handles btn_Dueforissue_Total_C.Click
+        Response.Redirect("GF_DisciplineDBDetails.aspx?detail=Dueforissue_Total_C&DivisionID=" & DivisionID & "&DisciplineID=" & DisciplineID & "&YearID=" & YearID & "&MonthID=" & MonthID)
+    End Sub
+
+
+    Private Sub btn_Dueforissue_Total_D_Click(sender As Object, e As EventArgs) Handles btn_Dueforissue_Total_D.Click
+        Response.Redirect("GF_DisciplineDBDetails.aspx?detail=Dueforissue_Total_D&DivisionID=" & DivisionID & "&DisciplineID=" & DisciplineID & "&YearID=" & YearID & "&MonthID=" & MonthID)
+    End Sub
 End Class

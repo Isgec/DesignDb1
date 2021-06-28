@@ -108,6 +108,7 @@
       <a class="nav-link" id="TRANS_TG" data-toggle="pill" href="#v-pills-trans-tg" role="tab" aria-controls="v-pills-profile" aria-selected="false"><font face="Comic Sans MS">TRANSMITTAL TYPE GRAPH</font></a>
         <a class="nav-link" id="TRANS_TI" data-toggle="pill" href="#v-pills-trans-ti" role="tab" aria-controls="v-pills-profile" aria-selected="false"><font face="Comic Sans MS">TRANSMITTAL ISSUED GRAPH</font></a>
        <a class="nav-link" id="PED" data-toggle="pill" href="#v-pills-ped" role="tab" aria-controls="v-pills-profile" aria-selected="false"><font face="Comic Sans MS">PENDING ERECTION DRAWING TO ISSUE</font></a>
+             <a class="nav-link" id="PID" data-toggle="pill" href="#v-pills-pid" role="tab" aria-controls="v-pills-profile" aria-selected="false"><font face="Comic Sans MS">PENDING DRAWING TO ISSUE</font></a>
        <a class="nav-link" id="SAR_G" data-toggle="pill" href="#v-pills-sar-g" role="tab" aria-controls="v-pills-profile" aria-selected="false"><font face="Comic Sans MS">SAR GRAPH</font></a>
             <a class="nav-link" id="SAR_T" data-toggle="pill" href="#v-pills-sar-t" role="tab" aria-controls="v-pills-profile" aria-selected="false"><font face="Comic Sans MS">SAR TABLE</font></a>
          <a class="nav-link" id="IDMS_PG" data-toggle="pill" href="#v-pills-idms-pg" role="tab" aria-controls="v-pills-profile" aria-selected="false"><font face="Comic Sans MS">IDMS PREORDER GRAPH</font></a>
@@ -1496,6 +1497,195 @@
        
 </div>
           </div>
+      <div class="tab-pane fade" id="v-pills-pid" role="tabpanel" aria-labelledby="PID">
+
+          <div class="container text-center" id="PIDTABLE" runat="server" visible="true">
+      <h5>Pending Document for issue Discipline Wise</h5>
+      <div class="row">
+
+        <div class="col-12">
+          <asp:Button ID="PIDDATAI" runat="server" CssClass="btn btn-outline-danger btn-sm btn-block font-weight-bold" ToolTip="Sorry !!! No Data in ERPLN" Text="" Font-Bold="true"   visible="false"></asp:Button>
+          </div>
+         </div>
+        
+        <div class="container text-center" id="PIDTABLE1" runat="server" visible="false">
+          <div class="border border-dark btn-outline-light">
+            <div class="container-fluid">
+
+              <div class="row">
+                 
+                <div class="col-2">
+                  <div class="text-dark">
+                    <h6><b>Discipline</b></h6>
+                  </div>
+                </div>
+
+
+
+                <div class="col-2">
+                  <div class="text-dark">
+                    <h6><b>Total Drawing Count</b></h6>
+                  </div>
+                </div>
+
+             
+                   
+                    <div class="col-2">
+                      <div class="text-info">
+                       <h6> <b>Pending Drawing Count</b></h6>
+                      </div>
+                    </div>
+                   
+
+
+              </div>
+             
+
+            <div class="container-fluid text-center">
+              <div class="row">
+                <div class="col-2">
+                  <h6><span class="btn btn-info btn-sm btn-block text-lg-left font-weight-bold"><font face="Comic Sans MS">Process </font></span></h6>
+                </div>
+                
+
+                    <div class="col-2">
+                      <asp:Button ID="btn_Process_PID_Total_Drawing_Count" runat="server" CssClass="btn btn-outline-dark btn-sm btn-block font-weight-bold" ToolTip="Process - Total Drawing Count" Text="" Font-Bold="true"></asp:Button>
+                    </div>
+                    <div class="col-2">
+                      <asp:Button ID="btn_Process_PID_Pending_Drawing_Count" runat="server" CssClass="btn btn-outline-info btn-sm btn-block font-weight-bold" ToolTip="Process - Pending Drawing Count" Text="" Font-Bold="true"></asp:Button>
+                    </div>
+                   
+                    
+                   
+
+                
+              </div>
+            </div>
+
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-2">
+                  <h6><span class="btn btn-info btn-sm btn-block text-lg-left font-weight-bold"><font face="Comic Sans MS">Mechanical </font></span></h6>
+                </div>
+               
+
+                   <div class="col-2">
+                      <asp:Button ID="btn_Mechanical_PID_Total_Drawing_Count" runat="server" CssClass="btn btn-outline-dark btn-sm btn-block font-weight-bold" ToolTip="Process - Total Drawing Count" Text="" Font-Bold="true"></asp:Button>
+                    </div>
+                    <div class="col-2">
+                      <asp:Button ID="btn_Mechanical_PID_Pending_Drawing_Count" runat="server" CssClass="btn btn-outline-info btn-sm btn-block font-weight-bold" ToolTip="Process - Pending Drawing Count" Text="" Font-Bold="true"></asp:Button>
+                    </div>
+                   
+                
+                   
+                   
+                  </div>
+               
+            </div>
+
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-md-2">
+                  <h6><span class="btn btn-info btn-sm btn-block text-lg-left font-weight-bold"><font face="Comic Sans MS">Structure </font></span></h6>
+                </div>
+               
+
+                    <div class="col-2">
+                      <asp:Button ID="btn_Structure_PID_Total_Drawing_Count" runat="server" CssClass="btn btn-outline-dark btn-sm btn-block font-weight-bold" ToolTip="Structure - Total Drawing Count" Text="" Font-Bold="true"></asp:Button>
+                    </div>
+                    <div class="col-2">
+                      <asp:Button ID="btn_Structure_PID_Pending_Drawing_Count" runat="server" CssClass="btn btn-outline-info btn-sm btn-block font-weight-bold" ToolTip="Structure - Pending Drawing Count" Text="" Font-Bold="true"></asp:Button>
+                    </div>
+                   
+               
+              </div>
+            </div>
+
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-md-2">
+                  <h6><span class="btn btn-info btn-sm btn-block text-lg-left font-weight-bold"><font face="Comic Sans MS">Piping </font></span></h6>
+                </div>
+                  <div class="col-2">
+                      <asp:Button ID="btn_Piping_PID_Total_Drawing_Count" runat="server" CssClass="btn btn-outline-dark btn-sm btn-block font-weight-bold" ToolTip="Piping - Total Drawing Count" Text="" Font-Bold="true"></asp:Button>
+                    </div>
+                    <div class="col-2">
+                      <asp:Button ID="btn_Piping_PID_Pending_Drawing_Count" runat="server" CssClass="btn btn-outline-info btn-sm btn-block font-weight-bold" ToolTip="Piping - Pending Drawing Count" Text="" Font-Bold="true"></asp:Button>
+                    </div>
+                   
+              </div>
+            </div>
+
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-md-2">
+                  <h6><span class="btn btn-info btn-sm btn-block text-lg-left font-weight-bold"><font face="Comic Sans MS">Electrical </font></span></h6>
+                </div>
+               <div class="col-2">
+                      <asp:Button ID="btn_Electrical_PID_Total_Drawing_Count" runat="server" CssClass="btn btn-outline-dark btn-sm btn-block font-weight-bold" ToolTip="Electrical - Total Drawing Count" Text="" Font-Bold="true"></asp:Button>
+                    </div>
+                    <div class="col-2">
+                      <asp:Button ID="btn_Electrical_PID_Pending_Drawing_Count" runat="server" CssClass="btn btn-outline-info btn-sm btn-block font-weight-bold" ToolTip="Electrical - Pending Drawing Count" Text="" Font-Bold="true"></asp:Button>
+                    </div>
+                   
+                </div>
+              </div>
+           
+
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-md-2">
+                  <h6><span class="btn btn-info btn-sm btn-block text-lg-left font-weight-bold"><font face="Comic Sans MS">C & I </font></span></h6>
+                </div>
+               <div class="col-2">
+                      <asp:Button ID="btn_CI_PID_Total_Drawing_Count" runat="server" CssClass="btn btn-outline-dark btn-sm btn-block font-weight-bold" ToolTip="C&I - Total Drawing Count" Text="" Font-Bold="true"></asp:Button>
+                    </div>
+                    <div class="col-2">
+                      <asp:Button ID="btn_CI_PID_Pending_Drawing_Count" runat="server" CssClass="btn btn-outline-info btn-sm btn-block font-weight-bold" ToolTip="C&I - Pending Drawing Count" Text="" Font-Bold="true"></asp:Button>
+                    </div>
+                    
+              </div>
+            </div>
+
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-md-2">
+                  <h6><span class="btn btn-info btn-sm btn-block text-lg-left font-weight-bold"><font face="Comic Sans MS">Others </font></span></h6>
+                </div>
+                <div class="col-2">
+                      <asp:Button ID="btn_Others_PID_Total_Drawing_Count" runat="server" CssClass="btn btn-outline-dark btn-sm btn-block font-weight-bold" ToolTip="Others - Total Drawing Count" Text="" Font-Bold="true"></asp:Button>
+                    </div>
+                    <div class="col-2">
+                      <asp:Button ID="btn_Others_PID_Pending_Drawing_Count" runat="server" CssClass="btn btn-outline-info btn-sm btn-block font-weight-bold" ToolTip="Others - Pending Drawing Count" Text="" Font-Bold="true"></asp:Button>
+                    </div>
+                    
+              </div>
+            </div>
+
+           <div class="container-fluid">
+              <div class="row">
+                <div class="col-md-2">
+                  <h6><span class="btn btn-info btn-sm btn-block text-lg-left font-weight-bold"><font face="Comic Sans MS">Total </font></span></h6>
+                </div>
+                <div class="col-2">
+                      <asp:Button ID="btn_Total_PID_Total_Drawing_Count" runat="server" CssClass="btn btn-outline-dark btn-sm btn-block font-weight-bold" ToolTip="Total Drawing Count" Text="" Font-Bold="true"></asp:Button>
+                    </div>
+                    <div class="col-2">
+                      <asp:Button ID="btn_Total_PID_Pending_Drawing_Count" runat="server" CssClass="btn btn-outline-info btn-sm btn-block font-weight-bold" ToolTip="Pending Drawing Count" Text="" Font-Bold="true"></asp:Button>
+                    </div>
+                    
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+          </div>
+       
+</div>
+
+        </div>
+
        <div class="tab-pane fade" id="v-pills-sar-g" role="tabpanel" aria-labelledby="SAR_G">
              <div class="row" id="C6" runat="server" visible="false">
       <div class="col-sm-12 text-center ">

@@ -60,6 +60,7 @@ Namespace SIS.DB
         Public Property APPROVEDBY_NAME As String = ""
         Public Property Element_desc As String = ""
         Public Property Vaultstatus As String = ""
+        Public Property V2buserid As String = ""
         'Public Property t_docn As String = ""
         'Public Property t_revn As String = ""
         'Public Property t_srno As String = ""
@@ -1062,55 +1063,73 @@ Namespace SIS.DB
 
 
             Using Con As SqlConnection = New SqlConnection(SIS.SYS.SQLDatabase.DBCommon.GetVaultConnectionString())
-                    Con.Open()
+                Con.Open()
 
 
-                    Sql = " Select  "
+                Sql = " Select  "
 
-                    Sql &= " fi.LifeCycleStateName                                                                                 "
-                        Sql &= "                       From dbo.FileIteration AS fi                                                     "
-                        Sql &= " INNER Join dbo.FileResource AS fr ON fr.ResourceId = fi.ResourceId                                    "
-                        Sql &= " INNER Join dbo.Iteration AS i ON fi.FileIterationId = i.IterationID                                    "
-                        Sql &= " INNER Join dbo.Entity AS e ON i.IterationID = e.EntityId                                              "
-                        Sql &= " INNER Join dbo.v_User AS uf ON uf.UserGroupID = e.CreateUserID                                         "
-                        Sql &= " INNER Join dbo.Master AS m ON m.MasterID = i.MasterID                                                 "
-                        Sql &= " INNER Join dbo.FileMaster AS fm ON fm.FileMasterID = m.MasterID                                        "
-                        Sql &= " INNER Join dbo.FileIteration AS fit ON fit.FileIterationId = m.TipIterationID                         "
-                        Sql &= " Left OUTER JOIN dbo.ContentSourceIndexStatus AS csis ON csis.EntityId = fit.ResourceId                 "
-                        Sql &= " Left OUTER JOIN dbo.Revision AS r ON i.RevisionId = r.RevisionId                                      "
-                        Sql &= " Left OUTER JOIN dbo.LifeCycleState AS lcs ON r.LifeCycleStateId = lcs.LifeCycleStateId                 "
-                        Sql &= "                                                                                                       "
-                    Sql &= " where FI.filename Like ('" & DocumentID & "%') AND I.IterationNumber=(     "
-                    Sql &= " SELECT                                                                                                "
-                        Sql &= "                                                                                                        "
-                        Sql &= " MAX(i.IterationNumber)                                                                                "
-                        Sql &= "                                                                                                        "
-                        Sql &= "                       From dbo.FileIteration AS fi                                                    "
-                        Sql &= " INNER Join dbo.FileResource AS fr ON fr.ResourceId = fi.ResourceId                                     "
-                        Sql &= " INNER Join dbo.Iteration AS i ON fi.FileIterationId = i.IterationID                                   "
-                        Sql &= " INNER Join dbo.Entity AS e ON i.IterationID = e.EntityId                                               "
-                        Sql &= " INNER Join dbo.v_User AS uf ON uf.UserGroupID = e.CreateUserID                                        "
-                        Sql &= " INNER Join dbo.Master AS m ON m.MasterID = i.MasterID                                                  "
-                        Sql &= " INNER Join dbo.FileMaster AS fm ON fm.FileMasterID = m.MasterID                                       "
-                        Sql &= " INNER Join dbo.FileIteration AS fit ON fit.FileIterationId = m.TipIterationID                          "
-                        Sql &= " Left OUTER JOIN dbo.ContentSourceIndexStatus AS csis ON csis.EntityId = fit.ResourceId                "
-                        Sql &= " Left OUTER JOIN dbo.Revision AS r ON i.RevisionId = r.RevisionId                                       "
-                        Sql &= " Left OUTER JOIN dbo.LifeCycleState AS lcs ON r.LifeCycleStateId = lcs.LifeCycleStateId                "
-                        Sql &= "                                                                                                        "
-                    Sql &= " where FI.filename Like ('" & DocumentID & "%')                                                   "
-                    Sql &= " )                                                                                                      "
-
-
-
+                Sql &= " fi.LifeCycleStateName                                                                                 "
+                Sql &= "                       From dbo.FileIteration AS fi                                                     "
+                Sql &= " INNER Join dbo.FileResource AS fr ON fr.ResourceId = fi.ResourceId                                    "
+                Sql &= " INNER Join dbo.Iteration AS i ON fi.FileIterationId = i.IterationID                                    "
+                Sql &= " INNER Join dbo.Entity AS e ON i.IterationID = e.EntityId                                              "
+                Sql &= " INNER Join dbo.v_User AS uf ON uf.UserGroupID = e.CreateUserID                                         "
+                Sql &= " INNER Join dbo.Master AS m ON m.MasterID = i.MasterID                                                 "
+                Sql &= " INNER Join dbo.FileMaster AS fm ON fm.FileMasterID = m.MasterID                                        "
+                Sql &= " INNER Join dbo.FileIteration AS fit ON fit.FileIterationId = m.TipIterationID                         "
+                Sql &= " Left OUTER JOIN dbo.ContentSourceIndexStatus AS csis ON csis.EntityId = fit.ResourceId                 "
+                Sql &= " Left OUTER JOIN dbo.Revision AS r ON i.RevisionId = r.RevisionId                                      "
+                Sql &= " Left OUTER JOIN dbo.LifeCycleState AS lcs ON r.LifeCycleStateId = lcs.LifeCycleStateId                 "
+                Sql &= "                                                                                                       "
+                Sql &= " where FI.filename Like ('" & DocumentID & "%') AND I.IterationNumber=(     "
+                Sql &= " SELECT                                                                                                "
+                Sql &= "                                                                                                        "
+                Sql &= " MAX(i.IterationNumber)                                                                                "
+                Sql &= "                                                                                                        "
+                Sql &= "                       From dbo.FileIteration AS fi                                                    "
+                Sql &= " INNER Join dbo.FileResource AS fr ON fr.ResourceId = fi.ResourceId                                     "
+                Sql &= " INNER Join dbo.Iteration AS i ON fi.FileIterationId = i.IterationID                                   "
+                Sql &= " INNER Join dbo.Entity AS e ON i.IterationID = e.EntityId                                               "
+                Sql &= " INNER Join dbo.v_User AS uf ON uf.UserGroupID = e.CreateUserID                                        "
+                Sql &= " INNER Join dbo.Master AS m ON m.MasterID = i.MasterID                                                  "
+                Sql &= " INNER Join dbo.FileMaster AS fm ON fm.FileMasterID = m.MasterID                                       "
+                Sql &= " INNER Join dbo.FileIteration AS fit ON fit.FileIterationId = m.TipIterationID                          "
+                Sql &= " Left OUTER JOIN dbo.ContentSourceIndexStatus AS csis ON csis.EntityId = fit.ResourceId                "
+                Sql &= " Left OUTER JOIN dbo.Revision AS r ON i.RevisionId = r.RevisionId                                       "
+                Sql &= " Left OUTER JOIN dbo.LifeCycleState AS lcs ON r.LifeCycleStateId = lcs.LifeCycleStateId                "
+                Sql &= "                                                                                                        "
+                Sql &= " where FI.filename Like ('" & DocumentID & "%')                                                   "
+                Sql &= " )                                                                                                      "
 
 
 
-                    Using Cmd As SqlCommand = Con.CreateCommand()
-                        Cmd.CommandType = CommandType.Text
-                        Cmd.CommandText = Sql
-                        mRet.Vaultstatus = Cmd.ExecuteScalar
-                    End Using
+
+
+
+                Using Cmd As SqlCommand = Con.CreateCommand()
+                    Cmd.CommandType = CommandType.Text
+                    Cmd.CommandText = Sql
+                    mRet.Vaultstatus = Cmd.ExecuteScalar
                 End Using
+            End Using
+
+            'Using Con As SqlConnection = New SqlConnection(SIS.SYS.SQLDatabase.DBCommon.GetPerkConnectionString())
+            '    Con.Open()
+
+            '    Sql = "SELECT Job_UserID FROM LOG_BaaNTransfer where srno=(select max(srno) from LOG_BaaNTransfer) "
+
+
+
+
+            '    Using Cmd As SqlCommand = Con.CreateCommand()
+            '        Cmd.CommandType = CommandType.Text
+            '        Cmd.CommandText = Sql
+            '        mRet.V2buserid = Cmd.ExecuteScalar
+            '    End Using
+            'End Using
+
+
+
 
             Return mRet
         End Function
@@ -2851,6 +2870,95 @@ Namespace SIS.DB
                     Dim rd As SqlDataReader = Cmd.ExecuteReader
                     While rd.Read
                         mRet.Add(New SIS.DB.MANHOUR_Information(rd))
+                    End While
+                End Using
+            End Using
+
+            Return mRet
+        End Function
+        Public Sub New(ByVal Reader As SqlDataReader)
+            Try
+                For Each pi As System.Reflection.PropertyInfo In Me.GetType.GetProperties
+                    If pi.MemberType = Reflection.MemberTypes.Property Then
+                        Try
+                            Dim Found As Boolean = False
+                            For I As Integer = 0 To Reader.FieldCount - 1
+                                If Reader.GetName(I).ToLower = pi.Name.ToLower Then
+                                    Found = True
+                                    Exit For
+                                End If
+                            Next
+                            If Found Then
+                                If Convert.IsDBNull(Reader(pi.Name)) Then
+                                    Select Case Reader.GetDataTypeName(Reader.GetOrdinal(pi.Name))
+                                        Case "decimal"
+                                            CallByName(Me, pi.Name, CallType.Let, "0.00")
+                                        Case "bit"
+                                            CallByName(Me, pi.Name, CallType.Let, Boolean.FalseString)
+                                        Case Else
+                                            CallByName(Me, pi.Name, CallType.Let, String.Empty)
+                                    End Select
+                                Else
+                                    CallByName(Me, pi.Name, CallType.Let, Reader(pi.Name))
+                                End If
+                            End If
+                        Catch ex As Exception
+                        End Try
+                    End If
+                Next
+            Catch ex As Exception
+            End Try
+        End Sub
+        Public Sub New()
+        End Sub
+    End Class
+
+    Public Class V2B_Information
+
+
+
+        Public Property Srno As String = ""
+        Public Property Processname As String = ""
+        Public Property StepError As String = ""
+        Public Property Job_CreatedBy As String = ""
+        Public Property Job_UserID As String = ""
+        Public Property CreatedOn As String = ""
+        Public Property StepDescription As String = ""
+
+
+
+
+
+        Public Shared Function GetV2BDATA(ByVal DocumentID As String, ByVal RevisionNo As String) As List(Of SIS.DB.V2B_Information)
+
+
+            If DocumentID = "" Then Return Nothing
+            Dim mRetd As New DBDocumentDB
+
+            mRetd.DocumentID = DocumentID
+
+
+            Dim mRet As New List(Of SIS.DB.V2B_Information)
+            Dim Sql As String = ""
+            Using Con As SqlConnection = New SqlConnection(SIS.SYS.SQLDatabase.DBCommon.GetPerkConnectionString())
+                Con.Open()
+
+
+
+                Sql &= " Select  Srno, Processname, StepError, Job_CreatedBy, Job_UserID, CreatedOn, StepDescription from [IJTPerks].[dbo].[LOG_BaaNTransfer] "
+                Sql &= " where   DocumentID like '%" & DocumentID & "%' order by Srno asc"
+
+
+                'Sql &= "  Select top(10) Srno, Processname, StepError, Job_CreatedBy, Job_UserID, CreatedOn, StepDescription from [IJTPerks].[dbo].[LOG_BaaNTransfer] order by srno desc "
+
+
+
+                Using Cmd As SqlCommand = Con.CreateCommand()
+                    Cmd.CommandType = CommandType.Text
+                    Cmd.CommandText = Sql
+                    Dim rd As SqlDataReader = Cmd.ExecuteReader
+                    While rd.Read
+                        mRet.Add(New SIS.DB.V2B_Information(rd))
                     End While
                 End Using
             End Using
